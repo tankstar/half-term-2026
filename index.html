@@ -1,0 +1,1483 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Олл-инклюзив на half-term</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: airport wayfinding strip on top, departures board as the hero, boarding passes for the shortlist, then a categorised catalogue, a side-by-side comparison and reference sections. */
+:root{
+  --paper:#F4F6F5; --card:#FFFFFF; --ink:#13202E; --muted:#56687A; --line:#D5DDE2; --chip:#E7EEF0;
+  --amber:#D99209; --amber-soft:#FFF3D6; --sea:#0E7A72; --sea-soft:#DDF3F0; --coral:#B9431C; --coral-soft:#FBE7DF;
+  --board-bg:#0F1720; --board-line:#1E2B37; --board-ink:#F3B73E; --board-dim:#9C8A5E; --board-text:#E9E3D2; --board-alert:#FF8A65;
+  --shadow:0 8px 24px rgba(19,32,46,.18);
+  --font-display:'Unbounded','Golos Text',system-ui,sans-serif;
+  --font-body:'Golos Text',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --nav-h:46px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C131A; --card:#121C25; --ink:#E5ECF1; --muted:#97A7B4; --line:#24323E; --chip:#1A2732;
+    --amber:#F2B53A; --amber-soft:#2E2510; --sea:#3EC4B5; --sea-soft:#10302D; --coral:#FF8058; --coral-soft:#3A1E15;
+    --board-bg:#070B10; --board-line:#17222C; --board-ink:#F7C35A; --board-dim:#8E7D53; --board-text:#E9E3D2;
+    --shadow:0 8px 24px rgba(0,0,0,.55);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C131A; --card:#121C25; --ink:#E5ECF1; --muted:#97A7B4; --line:#24323E; --chip:#1A2732;
+  --amber:#F2B53A; --amber-soft:#2E2510; --sea:#3EC4B5; --sea-soft:#10302D; --coral:#FF8058; --coral-soft:#3A1E15;
+  --board-bg:#070B10; --board-line:#17222C; --board-ink:#F7C35A; --board-dim:#8E7D53; --board-text:#E9E3D2;
+  --shadow:0 8px 24px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55;margin:0}
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+  .btn,.chipbtn,.star,.seg button{transition:background-color .15s,color .15s,border-color .15s}
+}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+section{padding-block:32px;scroll-margin-top:calc(var(--nav-h) + 4px)}
+.hero,.pass,.card,.gloss > div{scroll-margin-top:calc(var(--nav-h) + 12px)}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,5vw,44px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(20px,3vw,26px);font-weight:700}
+h3{font-size:16px;font-weight:700}
+h4{margin:0;font-size:16px;font-weight:700;line-height:1.25;text-wrap:balance}
+p{margin:0}
+a{color:var(--sea)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{max-width:68ch;color:var(--muted);font-size:16px}
+.sechead{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.sechead p{color:var(--muted);max-width:72ch}
+.s{color:var(--muted);font-size:12.5px}
+.mini{font-size:12px;color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:12px}
+
+/* top navigation, styled as airport wayfinding */
+.topnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--board-bg);border-bottom:1px solid var(--board-line)}
+.navrow{display:flex;align-items:center;gap:16px;min-height:var(--nav-h)}
+.brand{font-family:var(--font-mono);font-weight:700;font-size:12px;letter-spacing:.16em;color:var(--board-ink);white-space:nowrap;text-decoration:none}
+.navlinks{position:relative;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{color:var(--board-text);text-decoration:none;font-size:13.5px;white-space:nowrap;padding:12px 10px 10px;border-bottom:2px solid transparent}
+.navlinks a:hover{color:var(--board-ink)}
+.navlinks a[aria-current="true"]{color:var(--board-ink);border-bottom-color:var(--board-ink)}
+.navlinks a.navmine{color:var(--board-alert)}
+@media (max-width:720px){ .brand{display:none} }
+
+/* hero */
+.hero{padding-block:26px 8px;display:flex;flex-direction:column;gap:14px}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.fact{background:var(--chip);border-radius:999px;padding:4px 12px;font-size:13px}
+.fact b{font-family:var(--font-mono);font-weight:600}
+.fact.hot{background:var(--coral-soft);color:var(--coral);font-weight:600}
+
+/* departures board */
+.board{background:var(--board-bg);border-radius:14px;padding:14px 16px 6px;color:var(--board-text)}
+.board-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--board-line);padding-bottom:8px;margin-bottom:2px}
+.board-title{font-family:var(--font-mono);font-weight:700;letter-spacing:.18em;color:var(--board-ink);font-size:14px}
+.board-sub{font-family:var(--font-mono);font-size:11px;color:var(--board-dim);letter-spacing:.06em}
+.brow{display:grid;grid-template-columns:104px 124px minmax(0,1fr) 140px 92px;gap:12px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--board-line);font-family:var(--font-mono);font-size:14px;color:var(--board-text);text-decoration:none;border-radius:6px}
+.brow.head{color:var(--board-dim);font-size:11px;letter-spacing:.12em;padding-block:6px}
+.brow:last-child{border-bottom:0}
+a.brow:hover{background:var(--board-line)}
+.brow .route{color:var(--board-ink);font-weight:700;font-size:16px;letter-spacing:.06em;white-space:nowrap}
+.brow .hotel{font-family:var(--font-body);font-size:14px;line-height:1.3;min-width:0}
+.brow .hotel small{display:block;color:var(--board-dim);font-size:12px}
+.brow .remark{color:var(--board-ink);font-size:11.5px;letter-spacing:.08em}
+.brow .total{color:var(--board-ink);font-weight:700;text-align:right;font-size:16px}
+.brow .when small{display:block;color:var(--board-dim);font-size:11px}
+.brow.mine .remark,.brow.mine .total{color:var(--board-alert)}
+@media (max-width:760px){
+  .brow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"route total" "hotel hotel" "when remark";gap:3px 12px;padding:10px 4px}
+  .brow .route{grid-area:route}.brow .total{grid-area:total}.brow .hotel{grid-area:hotel}
+  .brow .when{grid-area:when;font-size:12.5px}
+  .brow .when small{display:inline;margin-left:6px}
+  .brow .remark{grid-area:remark;text-align:right;align-self:center}
+  .brow.head{display:none}
+}
+.board-note{font-size:13px;color:var(--muted)}
+
+/* boxes, lists, steps */
+.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:7px}
+.list li::marker{color:var(--amber)}
+.steps{margin:0;padding:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:9px}
+.steps li{counter-increment:st;display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;font-size:14px}
+.steps li::before{content:counter(st);font-family:var(--font-mono);font-weight:700;font-size:12px;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;margin-top:1px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px}
+
+/* boarding passes */
+.passes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr));gap:16px}
+.pass{background:var(--card);border:1px solid var(--line);border-radius:14px;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;min-width:0}
+.pass:target{border-color:var(--amber);box-shadow:0 0 0 2px var(--amber)}
+.pass-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px 8px 16px;background:var(--chip);font-size:12px}
+.pass-head .badge{font-family:var(--font-mono);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.pass-head .right{display:flex;align-items:center;gap:8px}
+.pass-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.route{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-weight:700;font-size:26px;letter-spacing:.04em}
+.route .arrow{flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--muted) 0 6px,transparent 6px 11px);position:relative}
+.route .arrow::after{content:"✈";position:absolute;left:50%;top:-11px;transform:translateX(-50%);font-size:14px;color:var(--amber);background:var(--card);padding:0 4px}
+.pass h3{font-size:17px}
+.place{color:var(--muted);font-size:13px}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 12px;font-size:13px;margin:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.kv dd .s{display:block}
+.kv .unconf{color:var(--coral);font-weight:600}
+.why{font-size:13px;background:var(--amber-soft);border-radius:8px;padding:8px 10px}
+.pass-stub{border-top:2px dashed var(--line);padding:12px 16px 14px;display:flex;flex-direction:column;gap:8px;position:relative}
+.pass-stub::before,.pass-stub::after{content:"";position:absolute;top:-9px;width:16px;height:16px;border-radius:50%;background:var(--paper);border:1px solid var(--line)}
+.pass-stub::before{left:-9px}.pass-stub::after{right:-9px}
+.breakdown{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;font-size:13px;font-variant-numeric:tabular-nums}
+.breakdown .minus{color:var(--sea)}
+.grand{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-top:1px solid var(--line);padding-top:6px}
+.grand b{font-family:var(--font-mono);font-size:22px}
+.grand span{color:var(--muted);font-size:12px}
+
+/* pros and cons */
+.pc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.pc li{display:grid;grid-template-columns:12px minmax(0,1fr);gap:6px;align-items:baseline}
+.pc li::before{font-family:var(--font-mono);font-weight:700}
+.pc li.p::before{content:"+";color:var(--sea)}
+.pc li.m::before{content:"−";color:var(--coral)}
+
+/* buttons, chips, tags */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:8px;padding:8px 12px;font-weight:600;font-size:14px;text-decoration:none;border:1px solid var(--ink);color:var(--ink);background:transparent;cursor:pointer;font-family:var(--font-body)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.small{padding:5px 10px;font-size:13px}
+.btn:hover{filter:brightness(1.08)}
+.links{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px}
+.links a{text-decoration:none;border-bottom:1px solid var(--line)}
+.links a:hover{border-bottom-color:currentColor}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:11px;border-radius:999px;padding:2px 8px;background:var(--chip);color:var(--ink);white-space:nowrap}
+.tag.good{background:var(--sea-soft);color:var(--sea)}
+.tag.warn{background:var(--coral-soft);color:var(--coral)}
+.tag.gold{background:var(--amber-soft);color:var(--ink)}
+.op{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.04em;padding:2px 6px;border-radius:5px;background:var(--card);border:1px solid var(--line);white-space:nowrap}
+.inc{font-size:12.5px;white-space:nowrap}
+.inc .y{color:var(--sea)} .inc .n{color:var(--coral)}
+.aipill{display:inline-flex;align-items:center;font-size:11.5px;font-weight:600;line-height:1.5;border-radius:999px;padding:1px 9px;background:var(--sea-soft);color:var(--sea);white-space:nowrap;text-decoration:none}
+.aipill:hover{text-decoration:underline}
+.star{font:inherit;font-size:17px;line-height:1;width:32px;height:32px;display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--muted);cursor:pointer;flex:none;padding:0}
+.star:hover{color:var(--amber)}
+.star[aria-pressed="true"]{color:var(--amber);border-color:var(--amber);background:var(--amber-soft)}
+
+/* catalogue controls */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:16px}
+.ctl-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ctl-block{display:flex;flex-direction:column;gap:8px}
+.chipbar{display:flex;flex-wrap:wrap;gap:8px}
+.chipbtn{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chipbtn .n{font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.chipbtn:hover{border-color:var(--ink)}
+.chipbtn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chipbtn[aria-pressed="true"] .n{color:var(--paper)}
+.chipbtn.ghost{background:transparent;border-style:dashed;color:var(--coral)}
+.filters{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-end}
+.filters label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+select,input[type=number]{font:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 8px}
+input[type=number]{width:84px;font-family:var(--font-mono)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:inherit;font-size:13px;border:0;background:var(--paper);color:var(--ink);padding:8px 12px;cursor:pointer}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.toggles{display:flex;flex-wrap:wrap;gap:8px}
+.tgl{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px 8px 10px;background:var(--paper);font-size:13.5px;cursor:pointer;max-width:330px;line-height:1.35}
+.tgl input{width:18px;height:18px;accent-color:var(--sea);margin:1px 0 0;flex:none}
+.tgl small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+details.sub summary{cursor:pointer;font-weight:600;font-size:14px}
+details.sub[open] summary{margin-bottom:10px}
+.legend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:8px 22px;font-size:13px}
+.legend-grid dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 10px;align-content:start}
+.legend-grid dt{font-weight:600}
+.legend-grid dd{margin:0;color:var(--muted)}
+.count{color:var(--muted);font-size:13px;margin-block:16px 10px}
+
+/* results */
+.results{display:flex;flex-direction:column;gap:28px}
+.group{display:flex;flex-direction:column;gap:12px}
+.ghead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 16px;border-bottom:2px solid var(--ink);padding-bottom:6px}
+.ghead h3{font-size:17px}
+.ghead .gmeta{font-family:var(--font-mono);font-size:12.5px;color:var(--muted)}
+.ghead p{flex-basis:100%;font-size:13px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(310px,100%),1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.is-pick{border-color:var(--amber)}
+.card.is-mine{border-color:var(--coral);box-shadow:inset 0 0 0 1px var(--coral)}
+.card-top{display:flex;align-items:center;gap:8px}
+.card-top .grow{flex:1}
+.pickmark{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;background:var(--amber-soft);color:var(--ink);padding:2px 6px;border-radius:5px}
+.minemark{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--coral);color:var(--card);padding:2px 7px;border-radius:5px}
+.card-main{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:start}
+.price{text-align:right}
+.price b{display:block;font-family:var(--font-mono);font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.price span{font-size:12px;color:var(--muted);white-space:nowrap}
+.trip{font-family:var(--font-mono);font-size:12.5px;display:flex;flex-wrap:wrap;align-items:center;gap:2px 10px}
+.incl-line{font-size:12.5px;color:var(--muted)}
+.more summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--sea)}
+.more[open] summary{margin-bottom:10px}
+.more-body{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:10px}
+.card-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:auto;padding-top:2px}
+.empty{padding:24px;text-align:center;border:1px dashed var(--line);border-radius:12px;color:var(--muted);display:flex;flex-direction:column;gap:10px;align-items:center}
+
+/* tables */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+thead th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--chip)}
+td.num,th.num{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+.ledger td .h{font-weight:600}
+.ledger td.total{font-weight:700;font-size:14px}
+.ledger tr.hl td{background:var(--amber-soft)}
+.ledger tr.mine td{background:var(--coral-soft)}
+.ledger tr.grp td{background:var(--chip);font-size:13px}
+.ledger tr.grp b{font-family:var(--font-display);font-weight:700;margin-right:8px}
+.cmp th[scope=row]{position:sticky;left:0;z-index:1;background:var(--chip);width:150px;min-width:130px;font-size:12px;color:var(--muted);font-weight:600}
+.cmp thead th{text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)}
+.cmp thead th:first-child{position:sticky;left:0;z-index:2}
+.cmp td{min-width:210px}
+.cmp td.best{background:var(--sea-soft)}
+.bestmark{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--sea);font-weight:700;margin-bottom:2px}
+.cmp .hcell{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.cmp .hcell .row{display:flex;gap:8px;align-items:center}
+.ops-table th[scope=row]{min-width:150px}
+.ops-table td{min-width:150px}
+
+/* destinations */
+.chart{display:flex;flex-direction:column;gap:7px;max-width:760px}
+.chart-title{font-weight:600;font-size:14px;margin-bottom:4px}
+.crow{display:grid;grid-template-columns:118px minmax(0,1fr) 62px;gap:12px;align-items:center;font-size:13.5px}
+.track{position:relative;height:20px;border-radius:4px;background-color:var(--chip);background-image:linear-gradient(to right,var(--line) 1px,transparent 1px);background-size:20% 100%;box-shadow:inset -1px 0 0 var(--line)}
+.bar-mark{position:absolute;top:5px;height:10px;border-radius:5px;background:var(--sea);min-width:10px}
+.dot-mark{position:absolute;top:5px;width:10px;height:10px;border-radius:50%;background:var(--sea);transform:translateX(-50%)}
+.cval{text-align:right}
+.axis .ticks{position:relative;height:16px;font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.axis .ticks span{position:absolute;top:0;transform:translateX(-50%)}
+.axis .ticks span:first-child{transform:none}
+.axis .ticks span:last-child{transform:translateX(-100%)}
+.regs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(290px,100%),1fr));gap:14px;margin-top:22px}
+.reg-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:auto;padding-top:4px}
+.found{font-family:var(--font-mono);font-size:12.5px}
+
+/* booking checklist */
+.check{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.check label{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start;cursor:pointer;font-size:14px}
+.check input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--sea)}
+.check input:checked + span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--muted)}
+.check .no{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-right:4px}
+
+/* direct booking */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
+.verdict{display:flex;gap:10px;align-items:flex-start}
+.verdict .dot{flex:none;width:10px;height:10px;border-radius:50%;margin-top:7px}
+.dot.red{background:var(--coral)} .dot.green{background:var(--sea)}
+.email{font-family:var(--font-mono);font-size:12.5px;white-space:pre-wrap;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto;max-height:420px;overflow-y:auto;margin:0}
+.field{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:13px}
+.field code{font-family:var(--font-mono);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 6px;overflow-wrap:anywhere}
+.status{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--coral);background:var(--coral-soft);border-radius:999px;padding:4px 10px;width:fit-content}
+
+/* glossary */
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:14px 24px;margin:0}
+.gloss > div{display:flex;flex-direction:column;gap:3px;padding-top:10px;border-top:1px solid var(--line)}
+.gloss > div:target{background:var(--amber-soft);border-radius:8px;padding:10px}
+.gloss dt{font-weight:700}
+.gloss dd{margin:0;font-size:14px}
+.codes{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px 18px;font-size:13.5px;margin-top:8px}
+.codes b{font-family:var(--font-mono);display:inline-block;min-width:40px}
+
+/* coverage */
+.coverage{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.cov{border-top:2px solid var(--line);padding-top:8px}
+.cov b{font-family:var(--font-mono);font-size:20px;display:block}
+.cov span{font-size:13px;color:var(--muted)}
+
+/* floating compare button */
+.fab{position:fixed;z-index:25;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:600;font-size:14px;border-radius:999px;padding:10px 16px;box-shadow:var(--shadow)}
+.fab b{font-family:var(--font-mono);background:var(--amber);color:var(--board-bg);border-radius:999px;min-width:22px;height:22px;display:inline-grid;place-items:center;font-size:12px;padding:0 6px}
+.fab.away{opacity:0;pointer-events:none}
+
+/* the family's own Booking.com find */
+.mine-box{border:2px solid var(--coral);background:var(--card);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.mine-top{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.mine-verdict{font-size:15.5px;max-width:82ch}
+.mine-verdict b{color:var(--coral)}
+.mine-table tr.sum td{font-weight:700;border-top:2px solid var(--ink)}
+.mine-table tr.alt td{background:var(--sea-soft)}
+.list li.alert::marker{color:var(--coral)}
+.list li.alert b{color:var(--coral)}
+
+footer{padding-block:24px 64px;color:var(--muted);font-size:13px}
+@media (max-width:520px){
+  .passes,.cards{grid-template-columns:minmax(0,1fr)}
+  .route{font-size:22px}
+  .crow{grid-template-columns:96px minmax(0,1fr) 52px;gap:8px}
+}
+</style>
+</head>
+<body>
+
+
+<nav class="topnav" aria-label="Разделы страницы">
+  <div class="wrap navrow">
+    <a class="brand" href="#top">HALF-TERM 2026</a>
+    <div class="navlinks" id="navlinks">
+      <a href="#top">Коротко</a>
+      <a href="#mine" class="navmine">Ваш вариант</a>
+      <a href="#picks">Шорт-лист</a>
+      <a href="#all">Все варианты</a>
+      <a href="#compare">Сравнение</a>
+      <a href="#dest">Направления</a>
+      <a href="#ops">Операторы и скидки</a>
+      <a href="#book">Как бронировать</a>
+      <a href="#direct">Письмо в отель</a>
+      <a href="#gloss">Словарик</a>
+      <a href="#method">Как искал</a>
+    </div>
+  </div>
+</nav>
+
+<header class="wrap hero" id="top">
+  <p class="eyebrow">Бракли → тепло · 2 взрослых + дети 13, 6 и 4 · вылет с 22.10, возвращение до 02.11, от 7 ночей · цены на 16 октября</p>
+  <h1>Олл-инклюзив на half-term</h1>
+  <p class="lede">Я проверил больше 6 500 предложений пяти британских туроператоров по всем аэропортам Англии и посчитал каждое «под ключ»: путёвка, налог на месте, багаж и трансфер, дорога из Бракли с парковкой, минус подтверждённые промокоды. Даты по вашим правилам: вылет не раньше четверга 22.10, возвращение не позже понедельника 02.11, от 7 ночей. Цены живые и меняются каждый час, поэтому перед оплатой сверяйте итог в корзине.</p>
+  <div class="facts">
+    <span class="fact hot" id="countdown" hidden></span>
+    <span class="fact">Все варианты: <b>олл-инклюзив</b></span>
+    <span class="fact">Без пропуска школы: <b>24.10–01.11</b></span>
+    <span class="fact">Каникулы в школах: <b>26–30.10</b></span>
+    <span class="fact">Часы в UK переводятся <b>25.10</b></span>
+    <span class="fact">Ближайшие аэропорты: <b>BHX · LTN · EMA</b></span>
+    <span class="fact">13-летний: ребёнок у туроператоров, взрослый в отелях напрямую</span>
+  </div>
+  <div class="board" aria-label="Шорт-лист на табло">
+    <div class="board-top"><span class="board-title">ВЫЛЕТЫ · ШОРТ-ЛИСТ</span><span class="board-sub" id="boardSub">ИТОГО С ДОРОГОЙ, НАЛОГАМИ И КОДАМИ</span></div>
+    <div class="brow head" aria-hidden="true"><span>ВЫЛЕТ</span><span>РЕЙС</span><span>ОТЕЛЬ</span><span>СТАТУС</span><span style="text-align:right">ИТОГО</span></div>
+    <div id="boardRows"></div>
+  </div>
+  <p class="board-note">Нажмите на строку, чтобы открыть посадочный талон с расчётом. Итог включает <span id="incNote">дорогу, налоги и коды</span>. <a href="#settings">Изменить расчёт</a></p>
+  <div class="hero-grid">
+    <div class="box">
+      <h3>Главные выводы</h3>
+      <ul class="list">
+        <li class="alert"><b>Ваш вариант с Booking и на 7 ночей дороже пакетов.</b> Crystal Prestige Pearl Collection «под ключ» с перелётом из Бирмингема стоит <span data-total="crystal-booking">£4,910</span>, а пятёрка Mitsis Alila у Jet2 без пропуска школы — <span data-total="alila-ltn7">£3,975</span>. <a href="#mine">Разбор</a></li>
+        <li><b>Неделя без пропуска школы — от £3,005.</b> Это Unique Residence в Кушадасы, суббота–суббота из East Midlands. Пятёрка Mitsis Alila на Родосе из Лутона — £3,740, Eftalia Blue в Аланье на 8 ночей — £3,856.</li>
+        <li><b>Самые дешёвые вылеты в Анталью — в понедельник 26.10.</b> Eftalia Blue на 7 ночей из East Midlands — £3,096 с вылетом днём. Обратно в понедельник 02.11, это один учебный день.</li>
+        <li><b>Пакет у туроператора выгоднее, чем собирать самому.</b> Granada Luxury Belek напрямую стоит £5,170 только за отель, а пакет Jet2 с перелётом, багажом и трансфером — £5,244. Отели Eftalia на эти даты напрямую уже распроданы.</li>
+        <li><b>Удобное время рейсов — редкость.</b> Без ночных прилётов, выезда из дома до 5 утра и возвращения после 00:30 только <span id="calmN">4</span> варианта. Лучший из них — Sundia в Олюденизе: вылет из Лутона днём, дома около 19:00.</li>
+        <li><b>У loveholidays цена в поиске занижена.</b> Mitsis Rodos Maris: £3,795 в поиске и £5,045 в корзине, причём без багажа и трансфера.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Как пользоваться страницей</h3>
+      <ol class="steps">
+        <li><span>Пробегите табло и <a href="#picks">шорт-лист</a>: шесть вариантов, каждый лучший в своей категории.</span></li>
+        <li><span>В разделе <a href="#all">«Все варианты»</a> включите важные для вас категории, например «Без пропуска школы» и «Удобное время рейсов». Категории складываются.</span></li>
+        <li><span>Нажимайте ☆ на понравившихся вариантах: они соберутся в <a href="#compare">«Сравнении»</a> бок о бок.</span></li>
+        <li><span>Перед оплатой пройдите <a href="#book">чек-лист бронирования</a> и сверьте итог в корзине оператора.</span></li>
+      </ol>
+      <p class="mini">Отмеченные варианты, фильтры и галочки сохраняются только в этом браузере.</p>
+    </div>
+  </div>
+</header>
+
+<section class="wrap" id="mine">
+  <div class="mine-box">
+    <div class="mine-top"><span class="minemark">Ваш вариант · Booking.com</span><span class="s">проверено 16.10, цены меняются</span></div>
+    <h2>Crystal Prestige Pearl Collection, Кемер</h2>
+    <p class="mine-verdict" id="mineVerdict"></p>
+    <div class="grid2">
+      <div class="stack">
+        <h3>Отель на Booking и перелёт отдельно, 25.10–01.11, без пропуска школы</h3>
+        <div class="scroll"><table class="mine-table" id="mineTable"></table></div>
+        <p class="mini">Перелёт — самый дешёвый прямой рейс на Kayak: Jet2 из Бирмингема 25.10 в 15:35, обратно SunExpress 01.11 в 15:15, £515 с человека без багажа. Трансфер — цена индивидуального трансфера у loveholidays.</p>
+      </div>
+      <div class="stack">
+        <h3>Что важно знать</h3>
+        <ul class="list">
+          <li><b>Цены на неделю.</b> На скриншоте £1,646 — неделя, возможно со скидкой Genius. В приложении на 25.10–01.11 семейный номер стоит £1,784 (невозвратный тариф) или £2,065 с бесплатной отменой до 23.10; на 24.10–31.10 — £1,806 и £2,091.</li>
+          <li><b>В поиске Booking отель помечен как недоступный.</b> На странице самого отеля номера на ваши даты есть, открывайте по ссылке ниже.</li>
+          <li><b>Три кровати на пятерых.</b> В семейном номере 50 м² одна двуспальная и две односпальные кровати, дополнительных кроватей нет.</li>
+          <li><b>13-летний здесь считается ребёнком.</b> Номер берут на 2 взрослых и 3 детей, младшие (4 и 6 лет) живут бесплатно.</li>
+          <li><b>Отель.</b> Гёйнюк, 50 км от аэропорта Антальи, до своего пляжа ≈ 180 м. По отзывам: много бассейнов, водные горки, анимация для детей, вечерние шоу. Оценка на Booking 8.4 (81 отзыв под новым названием).</li>
+          <li><b>Нет защиты ATOL.</b> Отель и перелёт покупаются отдельно: если рейс отменят, отель сам деньги не вернёт.</li>
+          <li><b>Пакетом у loveholidays.</b> На 7 ночей с 25.10 самый дешёвый вариант (£769 с человека) летит через Стамбул и возвращается во вторник, поэтому не подходит. С прямыми рейсами — от £849 с человека (≈ £4,245), из Бирмингема — £959 (≈ £4,795). До корзины не проверял, код SPLASH действует до 18.10.</li>
+        </ul>
+        <p class="links"><a href="https://www.booking.com/hotel/tr/le-chateau-de-prestige.en-gb.html?checkin=2026-10-25&amp;checkout=2026-11-01&amp;group_adults=2&amp;group_children=3&amp;age=13&amp;age=6&amp;age=4&amp;no_rooms=1&amp;selected_currency=GBP" target="_blank" rel="noopener">Отель на Booking ↗</a><a href="https://www.kayak.co.uk/flights/BHX,EMA,LTN,STN,LHR,LGW-AYT/2026-10-25/2026-11-01/3adults/children-6-4?sort=price_a&amp;fs=stops=0" target="_blank" rel="noopener">Рейсы на Kayak ↗</a><a href="https://www.loveholidays.com/holidays/l/?date=2026-10-25&amp;departureAirports=BHX,EMA,LTN,STN,LGW,LHR,MAN&amp;boardBasis=AI&amp;masterId=294470&amp;rooms=2-13-6-4&amp;nights=7" target="_blank" rel="noopener">Тот же отель пакетом на loveholidays ↗</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="picks">
+  <div class="sechead">
+    <h2>Шорт-лист</h2>
+    <p>Шесть вариантов, с которых стоит начать: три без единого учебного дня и три с возвращением в понедельник 02.11. Плюсы и минусы посчитаны для вашей семьи: школа, время рейсов, дорога до аэропорта, номер и море. Знак ≈ означает оценку.</p>
+  </div>
+  <div class="passes" id="passes"></div>
+</section>
+
+<section class="wrap" id="all">
+  <div class="sechead">
+    <h2>Все варианты по категориям</h2>
+    <p><span id="nAll">37</span> вариантов, все олл-инклюзив: 4–5★, рейтинг TripAdvisor от 4.0, размещение для пятерых. Все укладываются в ваши правила: вылет не раньше четверга 22.10, возвращение не позже понедельника 02.11, от 7 ночей.</p>
+  </div>
+  <div class="panel">
+    <div class="ctl-block">
+      <span class="ctl-title">Категории</span>
+      <div class="chipbar" id="chips" role="group" aria-label="Категории"></div>
+    </div>
+    <div class="filters">
+      <label>Направление<select id="fRegion"></select></label>
+      <label>Оператор<select id="fOp"></select></label>
+      <label>Группировать<select id="fGroup">
+        <option value="region">по направлению</option>
+        <option value="budget">по бюджету</option>
+        <option value="air">по аэропорту вылета</option>
+        <option value="op">по туроператору</option>
+        <option value="none">без группировки</option>
+      </select></label>
+      <label>Сортировать<select id="fSort">
+        <option value="total">по итогу</option>
+        <option value="rating">по отзывам</option>
+        <option value="school">по пропуску школы</option>
+        <option value="drive">по дороге до аэропорта</option>
+        <option value="sea">по температуре моря</option>
+        <option value="price">по цене путёвки</option>
+      </select></label>
+      <div class="seg" role="group" aria-label="Вид списка">
+        <button type="button" id="vCards" aria-pressed="true">Карточки</button>
+        <button type="button" id="vTable" aria-pressed="false">Таблица</button>
+      </div>
+    </div>
+    <div class="ctl-block" id="settings">
+      <span class="ctl-title">Что входит в итог</span>
+      <div class="toggles">
+        <label class="tgl"><input type="checkbox" id="optRoad" checked><span>Дорога и парковка<small>Бензин туда и обратно и парковка на 9–10 дней</small></span></label>
+        <label class="tgl"><input type="checkbox" id="optTax" checked><span>Налоги на месте<small>Климатический сбор в Греции, налог в Тунисе</small></span></label>
+        <label class="tgl"><input type="checkbox" id="optPromo" checked><span>Подтверждённые коды<small>TUI SAVE100 и loveholidays SPLASH</small></span></label>
+        <label class="tgl"><input type="checkbox" id="optJet2"><span>Код Jet2 −£100/−£150<small>Если найдёте рабочий код на HotUKDeals</small></span></label>
+        <label class="tgl"><input type="checkbox" id="optCb"><span>Кэшбэк TopCashback<small>Приходит после поездки</small></span></label>
+      </div>
+      <details class="sub">
+        <summary>Аэропорты: расстояние и парковка (можно поправить)</summary>
+        <div class="filters">
+          <label>Бензин, £ за милю<input type="number" id="fuel" step="0.01" min="0" value="0.17"></label>
+          <p class="mini" style="max-width:52ch">Дорога = 2 × расстояние × цена мили + парковка. Парковка у Бирмингема: loveholidays предлагал £161 (off-airport) и £184 (meet &amp; greet). Остальные цифры оценочные.</p>
+        </div>
+        <div class="scroll" style="margin-top:10px">
+          <table id="airTable"><thead><tr><th>Аэропорт</th><th class="num">Миль от Бракли</th><th class="num">Время в пути</th><th class="num">Парковка 9–10 дн., £</th><th class="num">Итого дорога</th></tr></thead><tbody></tbody></table>
+        </div>
+      </details>
+    </div>
+    <details class="sub">
+      <summary>Как читать карточку и что значат категории</summary>
+      <div class="legend-grid">
+        <dl>
+          <dt>Итог</dt><dd>Путёвка + налог на месте + багаж и трансфер (если не включены) + бензин и парковка − промокоды. «/ чел.» — итог, делённый на пятерых.</dd>
+          <dt>+ и −</dt><dd>Плюсы и минусы для вашей семьи: даты, школа, рейсы, аэропорт, номер, море.</dd>
+          <dt>≈</dt><dd>Оценка. Выезд из дома = вылет − 2 ч 20 мин − дорога. В отеле = прилёт + 1 ч + трансфер. Дома = посадка + 1 ч + дорога.</dd>
+          <dt>✓ / ✕</dt><dd>Багаж и трансфер входят в цену или нет. Если нет, я добавил оценку в итог.</dd>
+          <dt>Олл-инклюзив</dt><dd>Есть у всех вариантов. Plus и Ultra — расширенный: больше ресторанов, баров и напитков. Нажмите на зелёную метку, чтобы прочитать в словарике, что входит.</dd>
+          <dt>☆</dt><dd>Добавить вариант в сравнение.</dd>
+          <dt>Метки</dt><dd><span class="tag good">зелёная</span> — плюс, <span class="tag gold">жёлтая</span> — особенность, <span class="tag warn">красная</span> — предупреждение.</dd>
+        </dl>
+        <dl>
+          <dt>Шорт-лист</dt><dd>Шесть рекомендованных вариантов.</dd>
+          <dt>Итог до £4,000</dt><dd>С текущими настройками расчёта.</dd>
+          <dt>Без пропуска школы</dt><dd>Только каникулы и выходные, с 24.10 по 01.11.</dd>
+          <dt>Аэропорт до 1 ч 20</dt><dd>Бирмингем, Лутон или East Midlands.</dd>
+          <dt>Удобное время</dt><dd>Выезд из дома после 05:00, в отеле до полуночи, дома до 00:30.</dd>
+          <dt>Не больше 1 учебного дня</dt><dd>Пятница 23.10 или понедельник 02.11.</dd>
+          <dt>2 спальни / 2 номера</dt><dd>Дети спят отдельно от родителей.</dd>
+          <dt>Plus и Ultra</dt><dd>Расширенный олл-инклюзив.</dd>
+        </dl>
+      </div>
+    </details>
+  </div>
+  <p class="count" id="count" aria-live="polite"></p>
+  <div id="results"></div>
+</section>
+
+<section class="wrap" id="compare">
+  <div class="sechead">
+    <h2>Сравнение</h2>
+    <p id="cmpNote">Отмеченные ☆ варианты бок о бок. Зелёным выделено лучшее значение в строке.</p>
+  </div>
+  <div id="cmpBox"></div>
+</section>
+
+<section class="wrap" id="dest">
+  <div class="sechead">
+    <h2>Куда лететь в конце октября</h2>
+    <p>Средние значения на конец октября. С британским паспортом виза нужна только в Египет. Разница во времени указана после перевода часов в UK 25.10.</p>
+  </div>
+  <div class="chart" id="seaChart" aria-label="Температура моря в конце октября"></div>
+  <div class="regs" id="regs"></div>
+  <p class="mini" style="margin-top:10px">Источники: weather2travel (средние за октябрь), правила въезда FCDO на 16.10.2026, условия операторов. Время трансфера — моя оценка по расстоянию.</p>
+</section>
+
+<section class="wrap" id="ops">
+  <div class="sechead">
+    <h2>Операторы и скидки</h2>
+    <p>Что входит в цену у каждого туроператора, какие коды и кэшбэк работают и как вели себя цены при проверке 16.10. Все пять туроператоров продают пакеты под защитой ATOL, Booking.com продаёт только отель.</p>
+  </div>
+  <div class="scroll"><table class="ops-table" id="opsTable"></table></div>
+  <div class="cols" style="margin-top:16px">
+    <div class="box">
+      <h3>Промокоды</h3>
+      <ul class="list">
+        <li><b>loveholidays SPLASH</b>: −£150 за каждые £1,500, максимум −£600. Действует до воскресенья 18.10 и только на сайте.</li>
+        <li><b>TUI SAVE100</b>: −£100 при заказе от £800, вылеты до 31.10. Баннер показан прямо в результатах TUI.</li>
+        <li><b>Jet2</b>: код −£100 на октябрьские вылеты проверен на HotUKDeals, но скрыт кнопкой «See code». Для вылетов из BOH, BRS, LGW, LTN и STN бывает −£150. С кэшбэком не суммируется (£30 → £5).</li>
+        <li><b>easyJet holidays</b>: проверенного кода нет. Баллы Tesco Clubcard меняются на ваучеры easyJet holidays по двойному курсу.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Кэшбэк</h3>
+      <ul class="list">
+        <li>Сначала войдите в TopCashback или Quidco, затем перейдите на сайт оператора по их ссылке. Иначе кэшбэк не засчитают.</li>
+        <li>Jet2holidays: £30 фиксированно, с промокодом £5. TUI: 1,5%, бронь в приложении не считается.</li>
+        <li>loveholidays: 3,5% новым клиентам, обычно не вместе с кодом. On the Beach: 3% новым, 1% старым. easyJet holidays: нет.</li>
+        <li>Деньги приходят после поездки. В итог кэшбэк включается в настройках расчёта.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Чтобы не переплатить</h3>
+      <ul class="list">
+        <li>Сверяйте цену в корзине: у loveholidays она выросла с £3,795 до £5,045.</li>
+        <li>Платите кредитной картой: при покупке от £100 действует защита Section 75. Пакет даёт ещё и ATOL.</li>
+        <li>Бесплатное детское место даётся одно на номер. У Jet2 оно уже учтено в цене.</li>
+        <li>Перед оплатой уточните, работают ли аквапарк и детклуб после 31.10: у части отелей сезон заканчивается.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="book">
+  <div class="sechead">
+    <h2>Как бронировать: по шагам</h2>
+    <p>Отмечайте сделанное, галочки сохраняются в этом браузере. До вылета неделя, поэтому всё лучше сделать в один вечер.</p>
+  </div>
+  <div class="cols">
+    <div class="box">
+      <h3>До оплаты</h3>
+      <ol class="check">
+        <li><label><input type="checkbox" id="ck1" data-ck="ck1"><span><span class="no">1.</span>Отметьте ☆ два-три варианта и сравните их в разделе <a href="#compare">«Сравнение»</a>.</span></label></li>
+        <li><label><input type="checkbox" id="ck2" data-ck="ck2"><span><span class="no">2.</span>Нужен кэшбэк? Войдите в <a href="https://www.topcashback.co.uk/" target="_blank" rel="noopener">TopCashback</a> и перейдите на сайт оператора оттуда.</span></label></li>
+        <li><label><input type="checkbox" id="ck3" data-ck="ck3"><span><span class="no">3.</span>Откройте ссылку оператора. У Jet2 даты, аэропорт и состав семьи уже подставлены, у остальных откроется поиск: отель найдите по названию.</span></label></li>
+        <li><label><input type="checkbox" id="ck4" data-ck="ck4"><span><span class="no">4.</span>Проверьте состав: 2 взрослых и дети 13, 6 и 4 года. Возраст указывается на дату возвращения.</span></label></li>
+        <li><label><input type="checkbox" id="ck5" data-ck="ck5"><span><span class="no">5.</span>Проверьте номер и что включено: кровати на пятерых, багаж (сколько кг), трансфер, all inclusive.</span></label></li>
+        <li><label><input type="checkbox" id="ck6" data-ck="ck6"><span><span class="no">6.</span>Введите промокод (TUI SAVE100, loveholidays SPLASH до 18.10) и сверьте итог с этой страницей.</span></label></li>
+        <li><label><input type="checkbox" id="ck7" data-ck="ck7"><span><span class="no">7.</span>Платите кредитной картой. До вылета меньше 10 недель, поэтому обычно оплачивается вся сумма сразу.</span></label></li>
+      </ol>
+    </div>
+    <div class="box">
+      <h3>Сразу после оплаты</h3>
+      <ol class="check">
+        <li><label><input type="checkbox" id="ck8" data-ck="ck8"><span><span class="no">8.</span>Забронируйте парковку в аэропорту: заранее дешевле, чем на въезде.</span></label></li>
+        <li><label><input type="checkbox" id="ck9" data-ck="ck9"><span><span class="no">9.</span>Проверьте паспорта. Турция: срок действия не меньше 150 дней с даты прилёта. Греция: паспорт UK выдан меньше 10 лет назад и действует ещё 3 месяца после выезда. Египет: 6 месяцев. <a href="https://www.gov.uk/foreign-travel-advice/turkey/entry-requirements" target="_blank" rel="noopener">FCDO ↗</a></span></label></li>
+        <li><label><input type="checkbox" id="ck10" data-ck="ck10"><span><span class="no">10.</span>Страховка: если нет годовой, оформите. Карта <a href="https://www.gov.uk/global-health-insurance-card" target="_blank" rel="noopener">GHIC</a> работает в Греции, но не в Турции и Тунисе.</span></label></li>
+        <li><label><input type="checkbox" id="ck11" data-ck="ck11"><span><span class="no">11.</span>Если поездка захватывает учебные дни, предупредите школу заранее письменно.</span></label></li>
+        <li><label><input type="checkbox" id="ck12" data-ck="ck12"><span><span class="no">12.</span>Сохраните подтверждение брони и ATOL-сертификат, который оператор пришлёт на почту.</span></label></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="direct">
+  <div class="sechead">
+    <h2>Прямое бронирование и письмо в отель</h2>
+    <p>Я проверил загрузку отелей-кандидатов на их официальных сайтах и сравнил прямую цену с пакетом. Прямая бронь имеет смысл только там, где отель плюс отдельный перелёт выходят дешевле путёвки. Защиты ATOL при этом уже нет.</p>
+  </div>
+  <div class="grid2">
+    <div class="box">
+      <h3>Что показала проверка</h3>
+      <div class="verdict"><span class="dot red"></span><p><b>Сеть Eftalia (Blue, Marin, Aqua, Ocean, Splash, Village).</b> На официальном сайте семейные номера на заезд 23–27.10 распроданы, у Aqua и Ocean ещё и 20–28.10. Торговаться не о чем, эти отели берите через Jet2 или easyJet.</p></div>
+      <div class="verdict"><span class="dot red"></span><p><b>Granada Luxury Belek.</b> Напрямую только отель стоит €6,157 (≈£5,170) за семейный номер, осталось 2 таких номера. Пакет Jet2 с перелётом, багажом и трансфером стоит £5,244. Туроператор почти вдвое выгоднее.</p></div>
+      <div class="verdict"><span class="dot green"></span><p><b>Marvida Family Eco.</b> Свободны все типы номеров. Прямая цена Villa Family Suite на 24.10–02.11 (3 взрослых + 2 детей, ultra all inclusive, невозвратный тариф) — £1,810. Сайт отеля также предлагает −6% при прямом бронировании.</p></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Marvida: сам или пакетом</th><th class="num">£</th></tr></thead>
+        <tbody>
+          <tr><td>Перелёт Jet2 EMA ⇄ AYT, 24.10–02.11, 5 чел. (Google Flights)</td><td class="num">1,959</td></tr>
+          <tr><td>3 чемодана по 22 кг туда и обратно (оценка)</td><td class="num">~250</td></tr>
+          <tr><td>Трансфер аэропорт ⇄ Сиде (оценка)</td><td class="num">~110</td></tr>
+          <tr><td>Отель напрямую, Villa Family Suite, 9 ночей</td><td class="num">1,810</td></tr>
+          <tr><td><b>Самостоятельно</b></td><td class="num"><b>~4,130</b></td></tr>
+          <tr><td><b>Пакет Jet2</b> (то же + ATOL, 1 бесплатное детское место)</td><td class="num"><b>4,284</b></td></tr>
+        </tbody>
+      </table></div>
+      <p class="mini">Экономия выходит всего около £150, и вы теряете защиту пакета. Если отель даст 10–15%, разница вырастет до £330–420. Ради этого письмо и стоит отправить.</p>
+      <p class="links"><a href="https://reservation.marvidahotels.com/?checkin=2026-10-24&amp;checkout=2026-11-02" target="_blank" rel="noopener">Бронирование Marvida ↗</a><a href="https://onlinereservationbelek.rezervasyonal.com/en/?Checkin=2026-10-24&amp;Checkout=2026-11-02&amp;Adult=3&amp;child=2&amp;ChildAges=6%2B4&amp;language=en" target="_blank" rel="noopener">Бронирование Granada ↗</a><a href="https://reservation.eftaliahotels.com/en/hotels/eftalia-blue/" target="_blank" rel="noopener">Бронирование Eftalia ↗</a></p>
+    </div>
+    <div class="box">
+      <div class="status">● Письмо не отправлено: ждёт вашего «да»</div>
+      <div class="field"><span>Кому</span><code id="eTo">info.familyeco@marvidahotels.com</code><button type="button" class="btn small" data-copy="eTo">Копировать</button></div>
+      <div class="field"><span>Копия</span><code id="eCc">sales@marvidahotels.com</code><button type="button" class="btn small" data-copy="eCc">Копировать</button></div>
+      <div class="field"><span>Тема</span><code id="eSubj">Direct booking request: Villa Family Suite, 24 Oct – 2 Nov 2026, 5 guests</code><button type="button" class="btn small" data-copy="eSubj">Копировать</button></div>
+      <pre class="email" id="eBody">Dear Marvida Family Eco Reservations Team,
+
+We are a family from the UK (2 adults and 3 children aged 13, 6 and 4) and would like to stay at Marvida Family Eco from Saturday 24 October to Monday 2 November 2026 (9 nights), Ultra All Inclusive, ideally in a Villa Family Suite (a Family Room would also suit us).
+
+Your website currently shows £1,809.97 for the Villa Family Suite for these dates (non-refundable rate). We are also comparing a UK package holiday for the same hotel and dates, and we would much prefer to book directly with you if the total works for us.
+
+Could you please let us know:
+1. Your best direct rate for these dates. A rate of around £1,550 for the stay would let us book with you straight away.
+2. Whether a return airport transfer from Antalya Airport (AYT) for 5 people could be included. Our flight lands at about 00:10 on 25 October and departs at 21:15 on 2 November.
+3. Whether a late check-out on 2 November is possible, as our flight is in the evening.
+
+We can confirm and pay quickly if the offer suits us.
+
+Kind regards,
+[Имя Фамилия]
+[Телефон]</pre>
+      <button type="button" class="btn" data-copy="eBody">Копировать текст письма</button>
+      <p class="mini">Отправлю из вашего Gmail, когда скажете «да» и напишете, как подписать письмо. Можно отправить и самому: адреса взяты со страницы контактов marvidahotels.com.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="gloss">
+  <div class="sechead">
+    <h2>Словарик</h2>
+    <p>Термины, которые встречаются в карточках и на сайтах туроператоров.</p>
+  </div>
+  <dl class="gloss">
+    <div id="g-ai"><dt>All Inclusive (AI)</dt><dd>Завтрак, обед и ужин шведским столом, перекусы и местные напитки, включая алкоголь, в часы работы баров.</dd></div>
+    <div id="g-aiplus"><dt>AI Plus, Ultra All Inclusive</dt><dd>Расширенный вариант: больше баров и ресторанов, часть импортных напитков, иногда мини-бар и ужины à la carte. Точный состав у каждого отеля свой.</dd></div>
+    <div id="g-stars"><dt>★ и T</dt><dd>Звёзды — официальная категория отеля. «4T» и «5T» — собственная оценка TUI, она не совпадает со звёздами.</dd></div>
+    <div id="g-ta"><dt>TripAdvisor 4.5 (5,238)</dt><dd>Средняя оценка гостей из 5 и число отзывов. 4.5 и выше — отлично, 4.0–4.4 — хорошо.</dd></div>
+    <div id="g-fcp"><dt>Бесплатное детское место</dt><dd>Один ребёнок в номере не платит за проживание, только за перелёт и налоги. Обычно одно место на номер.</dd></div>
+    <div id="g-atol"><dt>Пакет и ATOL</dt><dd>Перелёт и отель одной покупкой. ATOL — гарантия UK: если оператор обанкротится, деньги вернут, а туристов вывезут домой. При раздельной покупке такой защиты нет.</dd></div>
+    <div id="g-s75"><dt>Section 75</dt><dd>При оплате кредитной картой покупки от £100 до £30,000 банк отвечает вместе с продавцом. По дебетовой карте есть только chargeback.</dd></div>
+    <div id="g-transfer"><dt>Трансфер</dt><dd>Автобус или машина из аэропорта в отель и обратно. В карточках указано примерное время в пути.</dd></div>
+    <div id="g-hand"><dt>Только ручная кладь</dt><dd>В цене нет чемоданов. У loveholidays чемодан стоит около £104 туда и обратно.</dd></div>
+    <div id="g-tax"><dt>Налог на месте</dt><dd>Туристический или климатический сбор, который платят в отеле. В Турции он уже в цене путёвки, в Греции и Тунисе нет.</dd></div>
+    <div id="g-halfterm"><dt>Half-term</dt><dd>Недельные каникулы в середине четверти. У большинства школ Англии в 2026 году — 26–30 октября.</dd></div>
+    <div id="g-school"><dt>Пропуск школы</dt><dd>Будние дни поездки вне каникул. Штраф рассматривают с 10 пропущенных занятий (5 дней) за 10 учебных недель: £80 на каждого родителя, £160 при оплате позже 21 дня.</dd></div>
+    <div id="g-nonref"><dt>Невозвратный тариф</dt><dd>Дешевле обычного, но при отмене деньги не возвращают.</dd></div>
+    <div id="g-parking"><dt>Meet &amp; greet и off-airport</dt><dd>Два вида парковки: машину забирают у терминала (дороже) или вы оставляете её на стоянке и едете к терминалу на шаттле.</dd></div>
+    <div id="g-discount"><dt>Скидка £X, «Осталось N»</dt><dd>Скидка — разница с прежней ценой самого оператора, сравнивайте итог. «Осталось N» — номеров по этой цене мало, следующая цена будет выше.</dd></div>
+    <div id="g-ees"><dt>EES</dt><dd>Система въезда в Шенген: при первом въезде в Грецию у паспорта UK снимают отпечатки пальцев и фото. Закладывайте время на границе.</dd></div>
+  </dl>
+  <div class="box" style="margin-top:22px">
+    <h3>Коды аэропортов</h3>
+    <div class="codes" id="codes"></div>
+  </div>
+</section>
+
+<section class="wrap" id="method">
+  <div class="sechead">
+    <h2>Как искал</h2>
+    <p>Поиск шёл в вашем Chrome 16 октября 2026: 2 взрослых + дети 13, 6 и 4, один номер (где оператор предлагал два номера, это указано), только all inclusive.</p>
+    <p>После ваших правил по датам я перепроверил всё ещё раз: Jet2 на 7 и 8 ночей с вылетами 22–26.10 из шести ближних аэропортов и easyJet holidays на 7–8 ночей из Лутона и Бирмингема. Варианты с вылетом в среду и возвращением во вторник убраны. TUI и On the Beach на 7 ночей не перепроверял: из их прежних вариантов на 9 ночей остались те, что укладываются в новые даты.</p>
+  </div>
+  <div class="coverage" aria-label="Что проверено">
+    <div class="cov"><b>484</b><span>предложения Jet2 на 7–8 ночей, вылеты 22–26.10</span></div>
+    <div class="cov"><b>≈3 300</b><span>пакетов easyJet holidays на 7–8 ночей из Лутона и Бирмингема</span></div>
+    <div class="cov"><b>314</b><span>предложений Jet2: 9 ночей, ±2 дня и точные даты, ближние аэропорты</span></div>
+    <div class="cov"><b>892</b><span>олл-инклюзив туров TUI, разобраны 200 самых дешёвых и рекомендованных</span></div>
+    <div class="cov"><b>1 119</b><span>пакетов easyJet holidays, точные даты и ±2 дня</span></div>
+    <div class="cov"><b>517</b><span>предложений loveholidays, одно проверено до корзины</span></div>
+    <div class="cov"><b>80</b><span>самых дешёвых туров On the Beach с 3 чемоданами</span></div>
+  </div>
+  <div class="cols" style="margin-top:18px">
+    <ul class="list">
+      <li><b>Jet2holidays</b>: 11 аэропортов Англии × все пляжные направления; 9 ночей ±2 дня, точные 23.10–01.11, отдельно аэропорты в пределах 2 часов. Цена Mitsis Alila перепроверена на странице отеля и совпала.</li>
+      <li><b>TUI</b>: 20 аэропортов, 23.10 ±1 день, 9 ночей, сортировка по цене и «рекомендуемые».</li>
+      <li><b>loveholidays и easyJet holidays</b>: все результаты сняты через их собственный поиск, точные даты и ±2 дня.</li>
+      <li><b>On the Beach</b>: точные даты, 3 чемодана в цене, сортировка по цене.</li>
+      <li><b>Самостоятельно</b>: Google Flights (EMA ⇄ AYT), официальные сайты Eftalia, Marvida и Granada.</li>
+    </ul>
+    <div class="stack">
+      <p>Не проверял lastminute.com, Expedia и BA Holidays: на эти даты они обычно продают те же туры через тех же поставщиков. Канары тоже не вошли: там на каникулы all inclusive для пятерых начинается от £5,400.</p>
+      <p class="links"><a href="https://www.hotukdeals.com/vouchers/jet2holidays.com" target="_blank" rel="noopener">Коды Jet2 на HotUKDeals ↗</a><a href="https://www.topcashback.co.uk/jet2holidays/" target="_blank" rel="noopener">TopCashback Jet2 ↗</a><a href="https://www.gov.uk/foreign-travel-advice/turkey" target="_blank" rel="noopener">FCDO: Турция ↗</a><a href="https://www.gov.uk/foreign-travel-advice/greece" target="_blank" rel="noopener">FCDO: Греция ↗</a></p>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">Подборка для семьи из Бракли, собрана 16.10.2026. Цены туроператоров меняются в течение дня, итог всегда сверяйте в корзине перед оплатой. <a href="#top">Наверх ↑</a></footer>
+
+<a class="fab" id="fab" href="#compare" hidden>Сравнить <b id="fabN">0</b></a>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- operator links ---------- */
+  var OCC = 'r2c13_6_4';
+  function J(path, ap, date, dur){ return 'https://www.jet2holidays.com' + path + '?duration=' + (dur || 9) + '&airport=' + ap + '&date=' + date + '&occupancy=' + OCC; }
+  function EJ(org, from, to){ return 'https://www.easyjet.com/en/holidays/mixedresultlist?ibf=true&to=' + to + '&from=' + from + '&dst=ALL&sAccId=&geog=ALL&flex=0&org=' + org + '&aa=1&rooms=2_3:13%7C6%7C4&page=1&take=10&orderBy=price&orderDirection=asc&m=0'; }
+  function TU(ap, when){ return 'https://www.tui.co.uk/h/destinations/packages?airports%5B%5D=' + ap + '&units%5B%5D=&when=' + when + '&until=&flexibility=false&monthSearch=false&flexibleDays=0&flexibleMonths=&noOfAdults=2&noOfChildren=3&childrenAge=13%2C6%2C4&duration=9115&choiceSearch=true&searchRequestType=ins&searchType=search&sp=true&multiSelect=true&room=&isVilla=false&reqType=&sortBy=totalPriceAsc&fcp=false&boardTypes=AI'; }
+  function LH(date, ap, id){ return 'https://www.loveholidays.com/holidays/l/?date=' + date + '&departureAirports=' + ap + '&boardBasis=AI&masterId=' + id + '&rooms=2-13-6-4&nights=9'; }
+  function OT(ap){ return 'https://www.onthebeach.co.uk/results?adults=2&childAges=13%2C6%2C4&children=3&dateFormat=specific&departureDate=2026-10-23&flexibility=0&hotelIds=&hotelLocationId=&infants=0&locationIds=&nights=9&departureRangeEndDate=2026-10-23&rooms=0&departureAirports=' + ap + '&bags=3&sort=PRICE_LOW_HIGH&page=1&filters%5Bboard_basis%5D%5B0%5D=AI'; }
+  var J2DEST = '39_151_150_149_2112_160_159_156_1719_161_157_1584_2169_2365_139_129_2191_8_95_103_2071_94_1364_99_2028_2235_98_97_2304_105_2051_2052_1857_1858_2305_2416_1929_1928_1747_104_2034_2229_2233_2260_2377_11_1452_2396_1497_2391_1679_122_125_2388_145_2241_2325_2323_1773_2280_2395_2394_43_26_4_2118_2119_7_916_1359_42';
+  function J2S(ap, date, dur){ return 'https://www.jet2holidays.com/search/results?airport=' + ap + '&date=' + date + '&duration=' + dur + '&occupancy=' + OCC + '&destination=' + J2DEST + '&sortorder=1&page=1&boardbasis=5'; }
+  var SITE_EFTALIA = 'https://reservation.eftaliahotels.com/en/hotels/eftalia-blue/';
+  var SITE_MARVIDA = 'https://reservation.marvidahotels.com/?checkin=2026-10-24&checkout=2026-11-02';
+  var SITE_GRANADA = 'https://onlinereservationbelek.rezervasyonal.com/en/?Checkin=2026-10-24&Checkout=2026-11-02&Adult=3&child=2&ChildAges=6%2B4&language=en';
+  var BOOKING_CRYSTAL = 'https://www.booking.com/hotel/tr/le-chateau-de-prestige.en-gb.html?checkin=2026-10-25&checkout=2026-11-01&group_adults=2&group_children=3&age=13&age=6&age=4&no_rooms=1&selected_currency=GBP';
+  var LH_CRYSTAL = 'https://www.loveholidays.com/holidays/l/?date=2026-10-25&departureAirports=BHX,EMA,LTN,STN,LGW,LHR,MAN&boardBasis=AI&masterId=294470&rooms=2-13-6-4&nights=7';
+  var K_UNIQUE = 'Мини-клуб 4–12 лет: 10:30–12:30 и 14:30–17:30, мини-диско в 21:00, программа идёт до 31.10 (сайт отеля). Аквапарк на 8 горок, из них 4 детские, работает 10:00–12:00 и 14:00–17:00. Открытые бассейны без подогрева: отель сам пишет, что в октябре вода очень холодная; крытый бассейн маленький. В дождь шоу переносят в крытый зал, но часть гостей в октябре 2025 анимации не застала. Детские меню и буфеты. Работают ли горки при такой воде — не подтверждено.';
+  var K_MARVIDA = 'Kids World на 3 350 м², 09:30–17:00: клуб 4–12 лет с игровыми для 2–4, 5–7 и 8–12 лет, бесплатный присмотр за детьми 2–12 лет до 17:00 (мест немного), мини-диско в 20:15, детский ресторан Hero’s с отдельным буфетом. Аквапарк на 5 горок и 4 детских бассейна; крытый бассейн и крытый детский — с подогревом. Шоу и шаттл к морю до 31.10. По отзывам начала ноября 2025 «почти все развлечения работали», но график на 1–2.11 — не подтверждено.';
+  var KIDS_CRYSTAL = 'По отзывам на Booking: много бассейнов, водные горки, развлечения для детей и вечерние шоу. Работают ли горки и детский клуб в конце октября — не подтверждено.';
+
+  /* ---------- reference data ---------- */
+  var AIR = {
+    BHX:{name:'Бирмингем', mi:55, t:'1 ч 05', min:65, park:150},
+    LTN:{name:'Лутон', mi:50, t:'1 ч 05', min:65, park:130},
+    EMA:{name:'East Midlands', mi:75, t:'1 ч 20', min:80, park:110},
+    LHR:{name:'Хитроу', mi:62, t:'1 ч 15', min:75, park:170},
+    STN:{name:'Станстед', mi:88, t:'1 ч 40', min:100, park:140},
+    BRS:{name:'Бристоль', mi:100, t:'1 ч 55', min:115, park:120},
+    LGW:{name:'Гатвик', mi:112, t:'2 ч 05', min:125, park:140},
+    MAN:{name:'Манчестер', mi:135, t:'2 ч 30', min:150, park:120},
+    LPL:{name:'Ливерпуль', mi:140, t:'2 ч 35', min:155, park:95},
+    LBA:{name:'Лидс-Брэдфорд', mi:160, t:'2 ч 55', min:175, park:110},
+    NCL:{name:'Ньюкасл', mi:235, t:'4 ч 10', min:250, park:100}
+  };
+  var DEST_AIR = {AYT:'Анталья', DLM:'Даламан', ADB:'Измир', RHO:'Родос', HER:'Ираклион, Крит', NBE:'Энфида, Тунис', HRG:'Хургада', CUN:'Канкун', KGS:'Кос', CHQ:'Ханья, Крит'};
+
+  var REG = {
+    antalya:{name:'Турция · Анталья', short:'Анталья', resorts:'Кемер, Сиде, Аланья, Белек, Лара', air:'24–27°', sea:[25,25], fly:'≈ 4 ч 20', tz:'+3 ч', transfer:'20 мин – 2 ч', season:'Сезон идёт весь ноябрь. Часть аквапарков при отелях закрывается 31.10.', tax:'Уже в цене путёвки', entry:'Без визы до 90 дней. Паспорт действует не меньше 150 дней с даты прилёта.', fcdo:'turkey', fcdoName:'Турция', plus:'Тёплое море ≈ 25°, сезон ещё идёт'},
+    dalaman:{name:'Турция · Даламан', short:'Даламан', resorts:'Мармарис, Ичмелер, Олюдениз, Саригерме', air:'≈ 25°', sea:[24,24], fly:'≈ 4 ч', tz:'+3 ч', transfer:'25 мин – 1 ч 40', season:'Последняя неделя сезона: в округе многое закрывается.', tax:'Уже в цене путёвки', entry:'Как в Анталье: без визы, паспорт на 150 дней.', fcdo:'turkey', fcdoName:'Турция', minus:'Последняя неделя сезона: в округе многое закрывается'},
+    aegean:{name:'Турция · Эгейское море', short:'Эгейское море', resorts:'Кушадасы, Дидим', air:'23–24°', sea:[21,22], fly:'≈ 4 ч', tz:'+3 ч', transfer:'≈ 1 ч 15', season:'Пляжные клубы закрыты, в отелях всё работает.', tax:'Уже в цене путёвки', entry:'Как в Анталье: без визы, паспорт на 150 дней.', fcdo:'turkey', fcdoName:'Турция', minus:'Море прохладнее: 21–22°'},
+    rhodes:{name:'Греция · Родос', short:'Родос', resorts:'Фалираки, Киотари', air:'≈ 24°', sea:[23,24], fly:'≈ 4 ч', tz:'+2 ч', transfer:'30 мин – 1 ч', season:'Многие отели закрываются около 1 ноября.', tax:'Климатический сбор £64–116 за номер, на месте', entry:'Шенген: паспорт UK выдан меньше 10 лет назад и действует ещё 3 месяца после выезда. На границе регистрация EES.', fcdo:'greece', fcdoName:'Греция', minus:'Конец сезона: многие отели закрываются около 1.11'},
+    crete:{name:'Греция · Крит', short:'Крит', resorts:'Аниссарас, Гувес', air:'21–22°', sea:[22,22], fly:'≈ 4 ч', tz:'+2 ч', transfer:'25–35 мин', season:'Часть услуг закрывается 1 ноября.', tax:'Климатический сбор £76–95 за номер, на месте', entry:'Как на Родосе: правила Шенгена и EES.', fcdo:'greece', fcdoName:'Греция', minus:'Прохладнее: воздух 21–22°, море ≈ 22°'},
+    kos:{name:'Греция · Кос', short:'Кос', resorts:'Кардамена, Мастихари', air:'≈ 23°', sea:[23,23], fly:'≈ 4 ч', tz:'+2 ч', transfer:'10–20 мин', season:'Последние недели сезона: вне отелей часть баров и ресторанов уже закрыта.', tax:'Климатический сбор на месте', entry:'Как на Родосе: правила Шенгена и EES.', fcdo:'greece', fcdoName:'Греция', minus:'Конец сезона: вне отеля многое закрыто'},
+    tunisia:{name:'Тунис', short:'Тунис', resorts:'Ясмин-Хаммамет, Махдия', air:'25–26°', sea:[24,25], fly:'≈ 3 ч', tz:'+1 ч', transfer:'40 мин – 1 ч 20', season:'Сезон.', tax:'≈ £83 на месте, с 12 лет', entry:'Без визы до 90 дней.', fcdo:'tunisia', fcdoName:'Тунис', plus:'Короткий перелёт ≈ 3 ч, море 24–25°'},
+    egypt:{name:'Египет', short:'Египет', resorts:'Хургада', air:'29–30°', sea:[26,27], fly:'≈ 5 ч 30', tz:'+2 ч', transfer:'≈ 20 мин', season:'Сезон, самое тёплое море. На каникулы в 2–2,5 раза дороже Турции.', tax:'Визы $30 × 5, добавлены в итог', entry:'Виза по прилёте, $30 на человека. Паспорт действует 6 месяцев.', fcdo:'egypt', fcdoName:'Египет', plus:'Самое тёплое море: 26–27°', minus:'В 2–2,5 раза дороже Турции'},
+    longhaul:{name:'Мексика', short:'Мексика', resorts:'Ривьера-Майя', air:'≈ 30°', sea:[28,28], fly:'≈ 11 ч', tz:'−5 ч', transfer:'≈ 1 ч', season:'Сезон, но на 9 ночей тяжело из-за перелёта и разницы во времени.', tax:'£30–160', entry:'Без визы.', fcdo:'mexico', fcdoName:'Мексика', plus:'Карибское море ≈ 28°', minus:'Перелёт ≈ 11 ч и разница во времени −5 ч'}
+  };
+
+  var OPS = {
+    'Jet2':{name:'Jet2holidays', bags:'22 кг на каждого', transfer:'Включён', code:'−£100, из BRS, LGW, LTN, STN −£150 (HotUKDeals)', cb:'£30, с кодом £5', seen:'Цена в поиске совпала со страницей отеля', brief:'Багаж 22 кг и трансфер в цене. Ссылки ведут сразу на отель с вашими датами.', note:'Ссылка откроет страницу отеля с вашими датами, аэропортом и составом семьи.', site:'https://www.jet2holidays.com/', hud:'https://www.hotukdeals.com/vouchers/jet2holidays.com', tcb:'https://www.topcashback.co.uk/jet2holidays/'},
+    'easyJet':{name:'easyJet holidays', bags:'23 кг на каждого', transfer:'Отдельной строкой, ≈ £60–140', code:'Проверенного кода нет', cb:'Нет', seen:'В выдаче трансфер идёт отдельной платной строкой; до корзины не проверял', brief:'Багаж 23 кг в цене, трансфер докупается. Кодов и кэшбэка нет.', note:'Ссылка откроет поиск easyJet holidays с вашими датами и аэропортом, по цене. Отель найдите по названию.', site:'https://www.easyjet.com/en/holidays'},
+    'TUI':{name:'TUI', bags:'15–20 кг на каждого', transfer:'Включён', code:'SAVE100: −£100 от £800, вылеты до 31.10', cb:'1,5%, кроме брони в приложении', seen:'Код показан прямо в результатах; до корзины не проверял', brief:'Багаж 15–20 кг и трансфер в цене, код SAVE100 −£100.', note:'Ссылка откроет поиск TUI: all inclusive, ваш аэропорт и дата. Отель найдите по названию.', site:'https://www.tui.co.uk/', hud:'https://www.hotukdeals.com/vouchers/tui.co.uk', tcb:'https://www.topcashback.co.uk/tui/'},
+    'loveholidays':{name:'loveholidays', bags:'Не включён, ≈ £104 за чемодан', transfer:'Не включён, ≈ £190', code:'SPLASH: −£150 за каждые £1,500, до −£600, до 18.10', cb:'3,5% новым, обычно не вместе с кодом', seen:'В корзине на £1,250 дороже, чем в поиске', brief:'Багаж и трансфер докупаются. Код SPLASH до −£600 действует до 18.10.', note:'Ссылка откроет отель на loveholidays с датой и аэропортом. Багаж и трансфер добавляются в корзине.', site:'https://www.loveholidays.com/', hud:'https://www.hotukdeals.com/vouchers/loveholidays.com', tcb:'https://www.topcashback.co.uk/loveholidays/'},
+    'On the Beach':{name:'On the Beach', bags:'3 чемодана, выбраны в поиске', transfer:'Не включён, ≈ £150', code:'Проверенного кода нет', cb:'3% новым, 1% старым', seen:'До корзины не проверял', brief:'3 чемодана в цене, трансфер докупается.', note:'Ссылка откроет поиск On the Beach: all inclusive, 3 чемодана, ваш аэропорт. Отель найдите по названию.', site:'https://www.onthebeach.co.uk/', hud:'https://www.hotukdeals.com/vouchers/onthebeach.co.uk', tcb:'https://www.topcashback.co.uk/on-the-beach/'},
+    'Booking.com':{name:'Booking.com (только отель)', bags:'Не входит', transfer:'Не входит', code:'Genius: до −10%, если войти в аккаунт', cb:'—', seen:'В поиске отель помечен как недоступный, а на странице отеля номера есть', brief:'Только отель: перелёт, багаж и трансфер покупаются отдельно, защиты ATOL нет.', note:'Ссылка откроет страницу отеля на Booking с вашими датами и составом семьи. Рейсы смотрите на Kayak, ссылка в разделе «Ваш вариант».', site:'https://www.booking.com/'}
+  };
+
+  var RT = {'1':'один номер', '2b':'две спальни', '2r':'два номера', '?':'номер на выбор'};
+  var BANDS = [
+    {max:3500, label:'Эконом · до £3,500', note:'до £700 на человека'},
+    {max:4000, label:'Оптимум · £3,500–4,000', note:'£700–800 на человека'},
+    {max:4500, label:'Комфорт · £4,000–4,500', note:'£800–900 на человека'},
+    {max:5000, label:'Выше среднего · £4,500–5,000', note:'£900–1,000 на человека'},
+    {max:Infinity, label:'Премиум и экзотика · от £5,000', note:'от £1,000 на человека'}
+  ];
+
+  /* ---------- deals (prices checked 16.10.2026) ---------- */
+  var P_ALILA='/beach/greece/rhodes/faliraki/mitsis-selection-alila', P_EBLUE='/beach/turkey/antalya-area/nr-alanya/eftalia-blue', P_LAB='/beach/turkey/dalaman-area/icmeler/labranda-mares-marmaris';
+  /* kids notes: operator pages, hotel sites, TripAdvisor reviews of late Oct 2025 (checked 16.10.2026) */
+  var K_ALILA = 'Детклуб Mitsis Storyland 4–12 лет, 10:00–18:00. По отзывам 2026 года он маленький и «открытый»: ребёнка там не оставляют под присмотр. В октябре 2025 клуб работал. Горок нет. Детский бассейн с подогревом, детское меню в 7 ресторанах. Дневная анимация по Jet2 только до 30.09, вечерние шоу до 31.10. Клуб и шоу после 31.10 — не подтверждено.',
+      K_EBLUE = 'Мини-клуб 4–12 лет. В отеле аквапарк на 7 горок и детский сплэш-парк с горками для 0–6 лет; на twister дети 7–10 лет катаются с родителями. Остров Eftalia Island (ещё 14 горок, детские бассейны и клуб) входит в путёвку до 31.10. По отзывам за октябрь 2025 горки работали ≈ 10:30–16:30 с перерывом на обед, мини-диско было каждый вечер. Подогреваемого бассейна в описаниях нет. Детский буфет и меню. Горки и клуб после 31.10 — не подтверждено.',
+      K_LAB = 'Мини-клуб 4–12 лет, вечером детский шведский стол. Бассейн с горками и 2 бассейна с детской зоной; подогрев не указан, в отзыве конца октября 2025 вода «ледяная». По Jet2 дневная анимация до 31.10, а вечерняя с мини-диско только до 30.09. В 2025 году отель закрылся на зиму в начале ноября, и в последнюю неделю гости жаловались на свёрнутые услуги. Работа клуба и горок в ваши даты — не подтверждено.';
+  var D = [
+    {id:'alila-ema', op:'Jet2', hotel:'Mitsis Selection Alila', place:'Фалираки, Родос', q:'Mitsis Selection Alila Faliraki', region:'rhodes', stars:'5★', ta:4.5, rev:5238, air:'EMA', to:'RHO', dep:'2026-10-23', ret:'2026-11-01', out:'12:55 → 19:10', back:'20:45 → 23:15', tr:30, room:'Семейный номер с видом на море', rt:'1', board:'AI Plus', price:4570, tax:115, incl:'bt', tags:[['Осталось 2','warn']], why:'Тот же отель ровно в ваши даты из East Midlands: дороже на £1,050.', kids:K_ALILA, link:J(P_ALILA,63,'23-10-2026')},
+    {id:'eblue-ema', op:'Jet2', hotel:'Eftalia Blue', place:'Тюрклер, Аланья', q:'Eftalia Blue Turkler Alanya', region:'antalya', stars:'4★', ta:4.5, rev:1146, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-02', out:'17:45 → 00:10', back:'21:15 → 22:55', tr:90, room:'Семейный номер, 2 спальни', rt:'2b', board:'AI Plus', price:3520, tax:0, incl:'bt', site:SITE_EFTALIA, tags:[['Бесплатное детское место','gold'],['Прилёт ночью','warn']], why:'Самое тёплое море за эти деньги и две спальни. Прилёт в 00:10, потом около 1,5 ч трансфера. Напрямую отель на эти даты уже распродан.', kids:K_EBLUE, link:J(P_EBLUE,63,'24-10-2026')},
+    {id:'lab-brs', op:'Jet2', hotel:'LABRANDA Mares Marmaris', place:'Ичмелер, Мармарис', q:'Labranda Mares Marmaris Icmeler', region:'dalaman', stars:'4★', ta:4.0, rev:5088, air:'BRS', to:'DLM', dep:'2026-10-23', ret:'2026-11-01', out:'14:10 → 20:15', back:'21:50 → 23:10', tr:100, room:'Семейный номер Superior', rt:'1', board:'AI Plus', price:3424, tax:0, incl:'bt', tags:[['Скидка £616','good'],['Ровно ваши даты','gold']], why:'Самая дешёвая четвёрка ровно на 23.10–01.11. До Бристоля около 2 ч езды.', kids:K_LAB, link:J(P_LAB,118,'23-10-2026')},
+    {id:'marvida-ema', op:'Jet2', hotel:'Marvida Family Eco', place:'Сиде', q:'Marvida Family Eco Side', region:'antalya', stars:'4★+', ta:4.5, rev:4343, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-02', out:'17:45 → 00:10', back:'21:15 → 22:55', tr:70, room:'Семейная вилла-сьют, 2 спальни', rt:'2b', board:'AI Plus', price:4284, tax:0, incl:'bt', site:SITE_MARVIDA, tags:[['Скидка £1,340','good'],['Осталось 4','warn']], why:'Отель для семей: аквапарк, детклуб, отдельная вилла. Свободных номеров много, письмо с просьбой о скидке подготовлено.', kids:'Kids World на 3 350 м², 09:30–17:00: клуб 4–12 лет с игровыми для 2–4, 5–7 и 8–12 лет, бесплатный присмотр за детьми 2–12 лет до 17:00 (мест немного), мини-диско в 20:15, детский ресторан Hero’s с отдельным буфетом. Аквапарк на 5 горок и 4 детских бассейна; крытый бассейн и крытый детский — с подогревом. Шоу и шаттл к морю до 31.10. По отзывам начала ноября 2025 «почти все развлечения работали», но график на 1–2.11 — не подтверждено.', link:J('/beach/turkey/antalya-area/side/marvida-family-hotel-eco',63,'24-10-2026')},
+    {id:'white-ema', op:'Jet2', hotel:'White City Resort', place:'Авсаллар, Аланья', q:'White City Resort Avsallar', region:'antalya', stars:'4★', ta:4.5, rev:4611, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-02', out:'17:45 → 00:10', back:'21:15 → 22:55', tr:85, room:'Семейный сьют из 2 смежных номеров', rt:'2r', board:'AI Plus', price:4224, tax:0, incl:'bt', tags:[['Скидка £912','good']], why:'Два смежных номера, хорошие отзывы.', link:J('/beach/turkey/antalya-area/nr-alanya/white-city-resort',63,'24-10-2026')},
+    {id:'granada-ema', op:'Jet2', hotel:'Granada Luxury Belek', place:'Белек', q:'Granada Luxury Belek', region:'antalya', stars:'5★', ta:4.5, rev:8114, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-02', out:'17:45 → 00:10', back:'21:15 → 22:55', tr:35, room:'Семейный номер, 2 спальни', rt:'2b', board:'AI Plus', price:5244, tax:0, incl:'bt', site:SITE_GRANADA, tags:[['Скидка £1,400','good'],['Пакет вдвое дешевле прямой брони','gold']], why:'Большая пятёрка с аквапарком. Напрямую в отеле такой номер стоит около £5,170 без перелёта.', link:J('/beach/turkey/antalya-area/belek/granada-luxury-belek',63,'24-10-2026')},
+    {id:'greenwood-ema', op:'Jet2', hotel:'Greenwood Suites Resort', place:'Лара, Анталья', q:'Greenwood Suites Resort Antalya', region:'antalya', stars:'4★', ta:4.5, rev:2780, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-02', out:'17:45 → 00:10', back:'21:15 → 22:55', tr:20, room:'Сьют Deluxe Superior', rt:'1', board:'AI', price:4184, tax:0, incl:'bt', tags:[['Скидка £496','good']], link:J('/beach/turkey/antalya-area/lara-beach/greenwood-suites-resort',63,'24-10-2026')},
+    {id:'calimera-ema', op:'Jet2', hotel:'Calimera Side Resort', place:'Сиде', q:'Calimera Side Resort', region:'antalya', stars:'4★', ta:4.5, rev:1822, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-02', out:'17:45 → 00:10', back:'21:15 → 22:55', tr:70, room:'Семейный сьют, 2 спальни', rt:'2b', board:'AI', price:4168, tax:0, incl:'bt', tags:[['Осталось 1','warn']], link:J('/beach/turkey/antalya-area/side/calimera-side-resort',63,'24-10-2026')},
+    {id:'kremlin-ema', op:'Jet2', hotel:'Kremlin Palace', place:'Лара, Анталья', q:'Kremlin Palace Antalya', region:'antalya', stars:'5★', ta:4.5, rev:6617, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-02', out:'17:45 → 00:10', back:'21:15 → 22:55', tr:20, room:'Сьют Kremlin', rt:'1', board:'AI Plus', price:4892, tax:0, incl:'bt', tags:[['Скидка £800','good'],['Осталось 3','warn']], link:J('/beach/turkey/antalya-area/lara-beach/kremlin-palace',63,'24-10-2026')},
+    {id:'gold-lpl', op:'Jet2', hotel:'Goldcity Tourism Complex', place:'Каргыджак, Аланья', q:'Goldcity Tourism Complex Alanya', region:'antalya', stars:'4★', ta:4.0, rev:2116, air:'LPL', to:'AYT', dep:'2026-10-23', ret:'2026-11-01', out:'15:15 → 21:45', back:'23:15 → 01:05', tr:120, room:'Семейный номер', rt:'1', board:'AI', price:4176, tax:0, incl:'bt', tags:[['Скидка £560','good'],['Ровно ваши даты','gold']], why:'Из East Midlands 22.10–31.10 тот же отель стоит £4,192.', link:J('/beach/turkey/antalya-area/kargicak/goldcity-tourism-complex',77,'23-10-2026')},
+    {id:'emarin-ema', op:'Jet2', hotel:'Eftalia Marin', place:'Тюрклер, Аланья', q:'Eftalia Marin Turkler Alanya', region:'antalya', stars:'5★', ta:4.2, rev:3571, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-02', out:'17:45 → 00:10', back:'21:15 → 22:55', tr:90, room:'Дуплекс с выходом в бассейн', rt:'2b', board:'AI', price:3864, tax:0, incl:'bt', tags:[['Бесплатное детское место','gold']], link:J('/beach/turkey/antalya-area/nr-alanya/eftalia-marin',63,'24-10-2026')},
+    {id:'sundia-lpl', op:'easyJet', hotel:'Sundia by Liberty SunCity', place:'Олюдениз', q:'Sundia by Liberty Suncity Oludeniz', region:'dalaman', stars:'4★', ta:4.7, rev:5372, air:'LPL', to:'DLM', dep:'2026-10-23', ret:'2026-11-01', out:'13:05 → 19:30', back:'вылет 23:55', eta:'01:20', tr:60, room:'Семейный номер, 2 спальни', rt:'2b', board:'AI', price:4008, tax:0, incl:'b', extra:125, extraLabel:'Трансфер (общий, по цене easyJet)', tags:[['Скидка £1,236','good'],['Ровно ваши даты','gold']], link:EJ('LPL','23-10-2026','01-11-2026')},
+    {id:'maris-ltn', op:'easyJet', hotel:'Mitsis Rodos Maris', place:'Киотари, Родос', q:'Mitsis Rodos Maris Kiotari', region:'rhodes', stars:'5★', ta:4.4, rev:5859, air:'LTN', to:'RHO', dep:'2026-10-23', ret:'2026-11-01', out:'12:55 → 19:10', back:'20:45 → 22:55', tr:60, room:'Семейный номер (2+3)', rt:'1', board:'AI', price:5321, tax:116, incl:'b', extra:100, extraLabel:'Трансфер (оценка)', tags:[['Ровно ваши даты','gold']], link:EJ('LTN','23-10-2026','01-11-2026')},
+    {id:'bluebay-man', op:'TUI', hotel:'Blue Bay Platinum', place:'Мармарис', q:'Blue Bay Platinum Marmaris', region:'dalaman', stars:'4T', ta:4.4, rev:6858, air:'MAN', to:'DLM', dep:'2026-10-24', ret:'2026-11-02', out:'TUI Airways', back:'', tr:90, room:'Семейный номер, 2 спальни', rt:'2b', board:'AI', price:3881, tax:0, incl:'bt', tags:[['Скидка £1,991','good']], link:TU('MAN','24-10-2026')},
+    {id:'yazici-bhx', op:'TUI', hotel:'Grand Yazici Club Marmaris Palace', place:'Ичмелер', q:'Grand Yazici Club Marmaris Palace', region:'dalaman', stars:'4T', ta:4.3, rev:4664, air:'BHX', to:'DLM', dep:'2026-10-23', ret:'2026-11-01', out:'TUI Airways', back:'', tr:100, room:'2 двухместных номера', rt:'2r', board:'AI', price:3956, tax:0, incl:'bt', tags:[['Ровно ваши даты','gold'],['Бесплатное детское место','gold']], link:TU('BHX','23-10-2026')},
+    {id:'sundia-bhx', op:'TUI', hotel:'Sundia by Liberty Suncity', place:'Олюдениз', q:'Sundia by Liberty Suncity Oludeniz', region:'dalaman', stars:'4T', ta:4.7, rev:5380, air:'BHX', to:'DLM', dep:'2026-10-23', ret:'2026-11-01', out:'TUI Airways', back:'', tr:60, room:'2 номера Twin', rt:'2r', board:'AI', price:3989, tax:0, incl:'bt', tags:[['Ровно ваши даты','gold'],['Бирмингем','gold']], link:TU('BHX','23-10-2026')},
+    {id:'tropical-bhx', op:'TUI', hotel:'TUI BLUE Tropical', place:'Саригерме', q:'TUI BLUE Tropical Sarigerme', region:'dalaman', stars:'4T', ta:4.5, rev:4412, air:'BHX', to:'DLM', dep:'2026-10-22', ret:'2026-10-31', out:'SunExpress', back:'', tr:25, room:'2 семейных номера', rt:'2r', board:'AI', price:4419, tax:0, incl:'bt', tags:[['Аквапарк','good']], link:TU('BHX','22-10-2026')},
+    {id:'maris-bhx-lh', op:'loveholidays', hotel:'Mitsis Rodos Maris', place:'Киотари, Родос', q:'Mitsis Rodos Maris Kiotari', region:'rhodes', stars:'5★', ta:4.4, rev:5862, air:'BHX', to:'RHO', dep:'2026-10-23', ret:'2026-11-01', out:'08:30 → 14:40', back:'22:25 → 00:50', tr:60, room:'Семейный номер с балконом', rt:'1', board:'AI', price:5045, tax:114, incl:'', extra:502, extraLabel:'3 чемодана и трансфер (оценка)', tags:[['Проверено в корзине','good'],['В поиске было £3,795','warn']], why:'Пример того, как вырастает цена: в поиске £3,795, в корзине уже £5,045, и это без багажа и трансфера.', link:LH('2026-10-23','BHX',3858)},
+    {id:'laur-stn', op:'On the Beach', hotel:'Laur Hotel Experience & Elegance', place:'Алтынкум (Дидим)', q:'Laur Hotel Experience Elegance Didim', region:'aegean', stars:'—', ta:4.6, rev:1904, air:'STN', to:'—', dep:'2026-10-23', ret:'2026-11-01', out:'прямой рейс', back:'', room:'по выбору на сайте', rt:'?', board:'AI', price:3530, tax:0, incl:'b', extra:150, extraLabel:'Трансфер (оценка)', tags:[['Ровно ваши даты','gold']], why:'В цене 3 чемодана, трансфер (около £150) добавлен оценочно.', link:OT('STN')},
+    {id:'palmin-stn', op:'On the Beach', hotel:'Hotel Palmin', place:'Кушадасы', q:'Hotel Palmin Kusadasi', region:'aegean', stars:'—', ta:4.6, rev:3249, air:'STN', to:'—', dep:'2026-10-23', ret:'2026-11-01', out:'прямой рейс', back:'', room:'по выбору на сайте', rt:'?', board:'AI', price:3640, tax:0, incl:'b', extra:150, extraLabel:'Трансфер (оценка)', tags:[['Ровно ваши даты','gold']], link:OT('STN')},
+    {id:'pasa-man', op:'On the Beach', hotel:'Pasa Beach Hotel', place:'Мармарис', q:'Pasa Beach Hotel Marmaris', region:'dalaman', stars:'—', ta:4.7, rev:4557, air:'MAN', to:'DLM', dep:'2026-10-23', ret:'2026-11-01', out:'прямой рейс', back:'', tr:90, room:'по выбору на сайте', rt:'?', board:'AI', price:3700, tax:0, incl:'b', extra:150, extraLabel:'Трансфер (оценка)', tags:[['Ровно ваши даты','gold']], link:OT('MAN')},
+    {id:'aquablu-brs', op:'TUI', hotel:'Pickalbatros Aqua Blu Resort', place:'Хургада, Египет', q:'Pickalbatros Aqua Blu Resort Hurghada', region:'egypt', stars:'4T', ta:4.8, rev:3117, air:'BRS', to:'HRG', dep:'2026-10-22', ret:'2026-10-31', out:'easyJet', back:'', tr:20, room:'Семейный номер', rt:'1', board:'AI', price:8869, tax:0, incl:'bt', extra:115, extraLabel:'Визы $30 × 5', tags:[['Визы $30 × 5','warn']], why:'Для сравнения: Египет самый тёплый, но на каникулы стоит в 2–2,5 раза дороже Турции.', link:TU('BRS','22-10-2026')},
+    {id:'sirenis-man', op:'TUI', hotel:'Grand Sirenis Riviera Maya', place:'Ривьера-Майя, Мексика', q:'Grand Sirenis Riviera Maya', region:'longhaul', stars:'5T', ta:4.3, rev:27640, air:'MAN', to:'CUN', dep:'2026-10-24', ret:'2026-11-02', out:'TUI Airways, ~11 ч', back:'', tr:60, room:'Junior Suite', rt:'1', board:'AI', price:7122, tax:0, incl:'bt', tags:[['Скидка £2,094','good']], why:'Для сравнения: дальний перелёт и разница во времени 5–6 часов.', link:TU('MAN','24-10-2026')},
+    {id:'unique-ema7', op:'Jet2', hotel:'Unique Residence Hotel Golf & Spa', place:'Кушадасы, Эгейское море', q:'Unique Residence Hotel Golf Spa Kusadasi', region:'aegean', stars:'4★', ta:4.5, rev:3344, air:'EMA', to:'ADB', dep:'2026-10-24', ret:'2026-10-31', out:'13:15 → 19:10', back:'21:00 → 22:10', tr:75, room:'Сьют Superior, 2 спальни', rt:'2b', board:'AI', price:3005, tax:0, incl:'bt', kids:K_UNIQUE, tags:[['Без пропуска школы','good'],['Скидка £675','good']], why:'Самая дешёвая неделя без единого учебного дня: суббота–суббота из East Midlands, сьют с двумя спальнями. Минус — на Эгейском море прохладнее: вода около 21–22°.', link:J('/beach/turkey/izmir-area/kusadasi/unique-residence-hotel-golf-and-spa',63,'24-10-2026',7)},
+    {id:'ramada-ema7', op:'Jet2', hotel:'Ramada Resort by Wyndham Kusadasi & Golf', place:'Кушадасы, Эгейское море', q:'Ramada Resort Kusadasi Golf', region:'aegean', stars:'4★', ta:4.5, rev:5075, air:'EMA', to:'ADB', dep:'2026-10-24', ret:'2026-10-31', out:'13:15 → 19:10', back:'21:00 → 22:10', tr:75, room:'Семейный сьют с видом на море сбоку', rt:'1', board:'AI Plus', price:3245, tax:0, incl:'bt', tags:[['Без пропуска школы','good'],['Скидка £290','good'],['Осталось 1','warn']], link:J2S(63,'24-10-2026',7)},
+    {id:'princess-ltn7', op:'Jet2', hotel:'Atlantica Princess Hotel', place:'Иалисос, Родос', q:'Atlantica Princess Hotel Ialyssos Rhodes', region:'rhodes', stars:'4★', ta:4.5, rev:1519, air:'LTN', to:'RHO', dep:'2026-10-24', ret:'2026-10-31', out:'18:20 → 00:30', back:'21:05 → 23:25', tr:15, room:'Семейный номер с перегородкой, вид на море', rt:'1', board:'AI', price:3472, tax:60, incl:'bt', tags:[['Без пропуска школы','good'],['Бесплатное детское место','gold'],['Осталось 1','warn']], why:'Отель в 15 минутах от аэропорта Родоса, поэтому поздний прилёт переносится легче.', link:J2S('127_7','24-10-2026',7)},
+    {id:'alila-ltn7', op:'Jet2', hotel:'Mitsis Selection Alila', place:'Фалираки, Родос', q:'Mitsis Selection Alila Faliraki', region:'rhodes', stars:'5★', ta:4.5, rev:5238, air:'LTN', to:'RHO', dep:'2026-10-24', ret:'2026-10-31', out:'18:20 → 00:30', back:'21:05 → 23:25', tr:30, room:'Семейный номер с видом на море сбоку', rt:'1', board:'AI Plus', price:3740, tax:88, incl:'bt', kids:K_ALILA, tags:[['Без пропуска школы','good'],['Бесплатное детское место','gold'],['Осталось 2','warn']], why:'Пятёрка без единого учебного дня: суббота–суббота из Лутона. Из East Midlands в воскресенье 25.10 с дневным рейсом — £4,155.', link:J2S('127_7','24-10-2026',7)},
+    {id:'venosa-ema7', op:'Jet2', hotel:'Venosa Beach Resort & Spa', place:'Алтынкум (Дидим), Эгейское море', q:'Venosa Beach Resort Spa Didim', region:'aegean', stars:'4★', ta:4.5, rev:6054, air:'EMA', to:'ADB', dep:'2026-10-24', ret:'2026-10-31', out:'13:15 → 19:10', back:'21:00 → 22:10', tr:120, room:'Семейный номер с видом на море на 5 человек', rt:'1', board:'AI Plus', price:3775, tax:0, incl:'bt', tags:[['Без пропуска школы','good'],['Скидка £345','good']], link:J2S(63,'24-10-2026',7)},
+    {id:'lab-brs7', op:'Jet2', hotel:'LABRANDA Mares Marmaris', place:'Ичмелер, Мармарис', q:'Labranda Mares Marmaris Icmeler', region:'dalaman', stars:'4★', ta:4.0, rev:5088, air:'BRS', to:'DLM', dep:'2026-10-25', ret:'2026-11-01', out:'14:00 → 21:05', back:'21:50 → 23:10', tr:100, room:'Семейный номер Superior', rt:'1', board:'AI Plus', price:3172, tax:0, incl:'bt', kids:K_LAB, tags:[['Без пропуска школы','good'],['Бесплатное детское место','gold']], link:J(P_LAB,118,'25-10-2026',7)},
+    {id:'akti-brs7', op:'Jet2', hotel:'Akti Beach Club', place:'Кардамена, Кос', q:'Akti Beach Club Kardamena Kos', region:'kos', stars:'4★', ta:4.5, rev:1102, air:'BRS', to:'KGS', dep:'2026-10-25', ret:'2026-11-01', out:'06:25 → 12:25', back:'13:10 → 15:25', tr:15, room:'Семейный номер Superior', rt:'1', board:'AI Plus', price:3276, tax:88, incl:'bt', tags:[['Без пропуска школы','good'],['Бесплатное детское место','gold'],['Осталось 2','warn']], why:'Отель в 15 минутах от аэропорта Коса, обратный рейс днём. Минус — вылет в 06:25.', link:J2S(118,'25-10-2026',7)},
+    {id:'orka-brs7', op:'Jet2', hotel:'Orka Lotus Beach', place:'Ичмелер, Мармарис', q:'Orka Lotus Beach Icmeler', region:'dalaman', stars:'4★', ta:4.5, rev:5752, air:'BRS', to:'DLM', dep:'2026-10-25', ret:'2026-11-01', out:'14:00 → 21:05', back:'21:50 → 23:10', tr:100, room:'Семейный номер на 5 человек', rt:'1', board:'AI', price:3600, tax:0, incl:'bt', tags:[['Без пропуска школы','good'],['Бесплатное детское место','gold']], why:'С понедельника 26.10 по понедельник 02.11 тот же отель стоит £3,092.', link:J2S(118,'25-10-2026',7)},
+    {id:'mikri-ltn7', op:'Jet2', hotel:'Atlantica Mikri Poli Crete', place:'Макри-Гиалос, Крит', q:'Atlantica Mikri Poli Crete Makry Gialos', region:'crete', stars:'4★+', ta:4.5, rev:2251, air:'LTN', to:'HER', dep:'2026-10-25', ret:'2026-11-01', out:'15:55 → 21:55', back:'22:50 → 01:00', tr:120, room:'Семейный сьют Superior', rt:'1', board:'AI', price:3860, tax:88, incl:'bt', tags:[['Без пропуска школы','good'],['Бесплатное детское место','gold'],['Осталось 2','warn']], link:J2S('127_7','25-10-2026',7)},
+    {id:'eblue-ema8', op:'Jet2', hotel:'Eftalia Blue', place:'Тюрклер, Аланья', q:'Eftalia Blue Turkler Alanya', region:'antalya', stars:'4★', ta:4.5, rev:1146, air:'EMA', to:'AYT', dep:'2026-10-24', ret:'2026-11-01', out:'17:45 → 00:10', back:'22:55 → 00:35', tr:90, room:'Семейный номер, 2 спальни', rt:'2b', board:'AI Plus', price:3856, tax:0, incl:'bt', site:SITE_EFTALIA, kids:K_EBLUE, tags:[['Без пропуска школы','good'],['Бесплатное детское место','gold']], why:'8 ночей без единого учебного дня. С понедельника 26.10 по понедельник 02.11 тот же отель стоит £3,096 и вылет днём.', link:J(P_EBLUE,63,'24-10-2026',8)},
+    {id:'eblue-ema7m', op:'Jet2', hotel:'Eftalia Blue', place:'Тюрклер, Аланья', q:'Eftalia Blue Turkler Alanya', region:'antalya', stars:'4★', ta:4.5, rev:1146, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:90, room:'Семейный номер, 2 спальни', rt:'2b', board:'AI Plus', price:3096, tax:0, incl:'bt', site:SITE_EFTALIA, kids:K_EBLUE, tags:[['Дневной вылет','good'],['Бесплатное детское место','gold']], why:'Самое тёплое море за минимальные деньги: вылет в понедельник 26.10 днём, в отеле около 23:00. Обратно в понедельник 02.11, это один учебный день.', link:J(P_EBLUE,63,'26-10-2026',7)},
+    {id:'marvida-ema7m', op:'Jet2', hotel:'Marvida Family Eco', place:'Сиде', q:'Marvida Family Eco Side', region:'antalya', stars:'4★+', ta:4.5, rev:4343, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:70, room:'Семейная вилла-сьют, 2 спальни', rt:'2b', board:'AI Plus', price:3680, tax:0, incl:'bt', site:SITE_MARVIDA, kids:K_MARVIDA, tags:[['Скидка £1,028','good'],['Осталось 4','warn']], why:'Отель для семей: аквапарк, детклуб, вилла с двумя спальнями. Неделя с понедельника на £600 дешевле 9 ночей. Письмо в отель о прямой цене подготовлено на 24.10–02.11.', link:J('/beach/turkey/antalya-area/side/marvida-family-hotel-eco',63,'26-10-2026',7)},
+    {id:'laguna-bhx7m', op:'Jet2', hotel:'Mitsis Selection Laguna', place:'Аниссарас, Крит', q:'Mitsis Selection Laguna Anissaras', region:'crete', stars:'5★', ta:4.5, rev:5423, air:'BHX', to:'HER', dep:'2026-10-26', ret:'2026-11-02', out:'16:45 → 22:50', back:'17:15 → 19:40', tr:35, room:'Семейный номер с видом на сад', rt:'1', board:'AI Plus', price:3685, tax:80, incl:'bt', tags:[['Бирмингем','gold'],['Осталось 2','warn']], why:'Пятёрка с вылетом из Бирмингема и удобным обратным рейсом: дома около 21:45. На Крите в конце октября прохладнее, около 22°.', link:J('/beach/greece/crete-heraklion-area/anissaras/mitsis-selection-laguna',98,'26-10-2026',7)},
+    {id:'arnor-ema7m', op:'Jet2', hotel:'Arnor Deluxe Hotel & Spa', place:'Сиде', q:'Arnor Deluxe Hotel Spa Side', region:'antalya', stars:'4★', ta:4.5, rev:2338, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:70, room:'Семейный номер', rt:'1', board:'AI Plus', price:3404, tax:0, incl:'bt', tags:[['Скидка £940','good'],['Бесплатное детское место','gold'],['Осталось 1','warn']], link:J2S(63,'26-10-2026',7)},
+    {id:'greenwood-ema7m', op:'Jet2', hotel:'Greenwood Suites Resort', place:'Лара, Анталья', q:'Greenwood Suites Resort Antalya', region:'antalya', stars:'4★', ta:4.5, rev:2780, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:20, room:'Сьют Deluxe Superior', rt:'1', board:'AI', price:3540, tax:0, incl:'bt', tags:[['Скидка £396','good'],['Бесплатное детское место','gold']], link:J('/beach/turkey/antalya-area/lara-beach/greenwood-suites-resort',63,'26-10-2026',7)},
+    {id:'white-ema7m', op:'Jet2', hotel:'White City Resort', place:'Авсаллар, Аланья', q:'White City Resort Avsallar', region:'antalya', stars:'4★', ta:4.5, rev:4611, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:85, room:'Семейный сьют из 2 смежных номеров', rt:'2r', board:'AI Plus', price:3624, tax:0, incl:'bt', tags:[['Скидка £716','good'],['Бесплатное детское место','gold']], link:J('/beach/turkey/antalya-area/nr-alanya/white-city-resort',63,'26-10-2026',7)},
+    {id:'adalya-ema7m', op:'Jet2', hotel:'Adalya Artside Hotel', place:'Сиде', q:'Adalya Artside Hotel Side', region:'antalya', stars:'4★', ta:4.5, rev:500, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:70, room:'Семейный номер, 2 спальни', rt:'2b', board:'AI Plus', price:3672, tax:0, incl:'bt', tags:[['Скидка £416','good'],['Бесплатное детское место','gold']], link:J2S(63,'26-10-2026',7)},
+    {id:'sentido-ema7m', op:'Jet2', hotel:'Sentido Serra Resort', place:'Сиде', q:'Sentido Serra Resort Side', region:'antalya', stars:'4★', ta:5.0, rev:141, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:70, room:'Семейный номер на 5 человек', rt:'1', board:'AI Plus', price:3812, tax:0, incl:'bt', tags:[['Скидка £224','good'],['Бесплатное детское место','gold'],['Осталось 1','warn']], link:J2S(63,'26-10-2026',7)},
+    {id:'swandor-ema7m', op:'Jet2', hotel:'Swandor Kemer', place:'Кемер', q:'Swandor Hotels Resorts Kemer', region:'antalya', stars:'4★+', ta:4.5, rev:1490, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:50, room:'Дуплекс Comfort', rt:'2b', board:'AI Plus', price:3880, tax:0, incl:'bt', tags:[['Скидка £540','good'],['Бесплатное детское место','gold']], link:J2S(63,'26-10-2026',7)},
+    {id:'kremlin-ema7m', op:'Jet2', hotel:'Kremlin Palace', place:'Лара, Анталья', q:'Kremlin Palace Antalya', region:'antalya', stars:'5★', ta:4.5, rev:6617, air:'EMA', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'13:00 → 20:25', back:'21:15 → 22:55', tr:20, room:'Сьют Kremlin', rt:'1', board:'AI Plus', price:4148, tax:0, incl:'bt', tags:[['Скидка £636','good'],['Осталось 3','warn']], link:J('/beach/turkey/antalya-area/lara-beach/kremlin-palace',63,'26-10-2026',7)},
+    {id:'lab-ltn7t', op:'Jet2', hotel:'LABRANDA Mares Marmaris', place:'Ичмелер, Мармарис', q:'Labranda Mares Marmaris Icmeler', region:'dalaman', stars:'4★', ta:4.0, rev:5088, air:'LTN', to:'DLM', dep:'2026-10-22', ret:'2026-10-29', out:'16:10 → 22:25', back:'23:20 → 00:45', tr:100, room:'Семейный номер Superior', rt:'1', board:'AI Plus', price:2732, tax:0, incl:'bt', kids:K_LAB, tags:[['Самый дешёвый','good'],['Скидка £460','good'],['Бесплатное детское место','gold']], why:'Самая дешёвая неделя в подборке, но четверг и пятница учебные, а обратный рейс ночью.', link:J2S('127_7','22-10-2026',7)},
+    {id:'caldera-brs7t', op:'Jet2', hotel:'Caldera Beach & Waterpark', place:'Герани, Ханья, Крит', q:'Caldera Beach Waterpark Gerani Chania', region:'crete', stars:'4★', ta:4.5, rev:815, air:'BRS', to:'CHQ', dep:'2026-10-22', ret:'2026-10-29', out:'07:20 → 13:20', back:'14:10 → 16:25', tr:35, room:'Мезонет Olympos с одной спальней', rt:'1', board:'AI', price:2725, tax:60, incl:'bt', tags:[['Аквапарк','good'],['Скидка £380','good'],['Осталось 1','warn']], why:'Свой аквапарк и дневные рейсы из Бристоля. Минус — четверг и пятница учебные.', link:J2S(118,'22-10-2026',7)},
+    {id:'gaia-ltn7t', op:'Jet2', hotel:'Gaia Palace', place:'Мастихари, Кос', q:'Gaia Palace Mastichari Kos', region:'kos', stars:'4★+', ta:4.5, rev:1231, air:'LTN', to:'KGS', dep:'2026-10-22', ret:'2026-10-29', out:'16:50 → 22:50', back:'23:45 → 01:50', tr:15, room:'Семейный номер', rt:'1', board:'AI', price:3185, tax:90, incl:'bt', tags:[['Осталось 1','warn']], link:J2S('127_7','22-10-2026',7)},
+    {id:'sundia-ltn7', op:'easyJet', hotel:'Sundia by Liberty SunCity', place:'Олюдениз', q:'Sundia by Liberty Suncity Oludeniz', region:'dalaman', stars:'4★', ta:4.7, rev:5372, air:'LTN', to:'DLM', dep:'2026-10-24', ret:'2026-10-31', out:'13:10 → 19:25', back:'15:15 → 16:45', tr:60, room:'Семейный номер, 2 спальни, вид на сад', rt:'2b', board:'AI', price:4229, tax:0, incl:'b', extra:125, extraLabel:'Трансфер (общий, по цене easyJet)', tags:[['Без пропуска школы','good'],['Дневные рейсы','good']], why:'Удобнее всего по времени: вылет днём, обратный рейс в 15:15, дома около 18:50. Две спальни и отличные отзывы.', link:EJ('LTN','24-10-2026','31-10-2026')},
+    {id:'katrin-ltn7', op:'easyJet', hotel:'Katrin Hotel & Bungalows', place:'Крит', q:'Katrin Hotel Bungalows Crete', region:'crete', stars:'4★', ta:4.3, rev:1193, air:'LTN', to:'HER', dep:'2026-10-24', ret:'2026-10-31', out:'14:30 → 20:35', back:'14:20 → 16:30', tr:75, room:'Семейный номер на 5 человек', rt:'1', board:'AI', price:3721, tax:60, incl:'b', extra:106, extraLabel:'Трансфер (общий, по цене easyJet)', tags:[['Без пропуска школы','good'],['Дневные рейсы','good']], link:EJ('LTN','24-10-2026','31-10-2026')},
+    {id:'aria-ltn7', op:'easyJet', hotel:'Aria Claros Beach & Spa Resort', place:'Оздере, Эгейское море', q:'Aria Claros Beach Spa Resort Ozdere', region:'aegean', stars:'5★', ta:4.0, rev:3489, air:'LTN', to:'ADB', dep:'2026-10-24', ret:'2026-11-01', n:7, out:'14:10 → 20:10', back:'01:15 → 02:35', tr:75, room:'Семейный номер Club, 2 спальни, вид на море', rt:'2b', board:'AI', price:3243, tax:0, incl:'b', extra:125, extraLabel:'Трансфер (общий, по цене easyJet)', tags:[['Без пропуска школы','good'],['Ночной обратный рейс','warn']], why:'Пятёрка с двумя спальнями по цене четвёрки. Минус — обратный рейс в 01:15 в ночь на воскресенье.', link:EJ('LTN','24-10-2026','31-10-2026')},
+    {id:'kiotari-ltn7m', op:'easyJet', hotel:'Kiotari Miraluna Beach Resort', place:'Киотари, Родос', q:'Kiotari Miraluna Beach Resort Rhodes', region:'rhodes', stars:'4★', ta:4.2, rev:2968, air:'LTN', to:'RHO', dep:'2026-10-26', ret:'2026-11-02', out:'11:15 → 17:40', back:'18:50 → 21:00', tr:60, room:'Семейный мезонет с общим бассейном', rt:'2b', board:'AI', price:3283, tax:54, incl:'b', extra:138, extraLabel:'Трансфер (общий, по цене easyJet)', tags:[['Дневные рейсы','good']], link:EJ('LTN','26-10-2026','02-11-2026')},
+    {id:'esper-ltn7m', op:'easyJet', hotel:'Esperides Beach Resort Family Concept', place:'Фалираки, Родос', q:'Esperides Beach Resort Family Concept Faliraki', region:'rhodes', stars:'4★', ta:4.5, rev:2938, air:'LTN', to:'RHO', dep:'2026-10-26', ret:'2026-11-02', out:'11:15 → 17:40', back:'18:50 → 21:00', tr:30, room:'Семейный номер Superior с видом на сад', rt:'1', board:'AI', price:4055, tax:54, incl:'b', extra:62, extraLabel:'Трансфер (общий, по цене easyJet)', tags:[['Дневные рейсы','good']], link:EJ('LTN','26-10-2026','02-11-2026')},
+    {id:'sunis-ltn7m', op:'easyJet', hotel:'Sunis Elita Beach Resort', place:'Кызылагач, Сиде', q:'Sunis Elita Beach Resort Side', region:'antalya', stars:'5★', ta:4.6, rev:2532, air:'LTN', to:'AYT', dep:'2026-10-26', ret:'2026-11-02', out:'12:40 → 19:55', back:'20:50 → 22:35', tr:75, room:'Семейный номер из 2 смежных комнат', rt:'2r', board:'AI', price:4395, tax:0, incl:'b', extra:118, extraLabel:'Трансфер (общий, по цене easyJet)', tags:[['Дневной вылет','good']], link:EJ('LTN','26-10-2026','02-11-2026')},
+    {id:'crystal-booking', op:'Booking.com', mine:true, diy:true, beds3:true, hotel:'Crystal Prestige Pearl Collection', place:'Гёйнюк, Кемер', q:'Crystal Prestige Pearl Collection Goynuk Kemer', region:'antalya', stars:'5★', ta:4.5, rev:3983, air:'BHX', to:'AYT', dep:'2026-10-25', ret:'2026-11-01', out:'15:35 → 23:00', back:'15:15 → 17:05', tr:55, room:'Семейный номер 50 м²: одна двуспальная и две односпальные кровати', rt:'1', board:'AI', price:1784, priceLabel:'Отель на Booking.com, 7 ночей, мобильная цена', tax:0, incl:'', extras:[['Перелёт Jet2 и SunExpress Бирмингем ⇄ Анталья, 5 человек', 2572], ['3 чемодана туда и обратно (оценка)', 250], ['Трансфер аэропорт ⇄ отель', 135]], tags:[['Ваш вариант с Booking','warn'],['Без защиты ATOL','warn'],['Бесплатно 2 детей (4 и 6 лет)','gold']], kids:KIDS_CRYSTAL, why:'Вариант со скриншота, пересчитан на неделю без пропуска школы: 25.10–01.11. Цена отеля мобильная, тариф невозвратный; с бесплатной отменой до 23.10 — £2,065.', link:BOOKING_CRYSTAL}
+  ];
+
+  var PICKS = ['unique-ema7','alila-ltn7','sundia-ltn7','eblue-ema7m','laguna-bhx7m','marvida-ema7m'];
+  var PICK_LABEL = {
+    'unique-ema7':'Минимальный бюджет без пропуска школы',
+    'alila-ltn7':'Пятёрка без пропуска школы',
+    'sundia-ltn7':'Дневные рейсы туда и обратно',
+    'eblue-ema7m':'Самое тёплое море за эти деньги',
+    'laguna-bhx7m':'Из Бирмингема',
+    'marvida-ema7m':'Семейный отель + письмо о скидке'
+  };
+  var PICK_REMARK = {'unique-ema7':'ЭКОНОМ', 'alila-ltn7':'ПЯТЁРКА', 'sundia-ltn7':'ДНЕВНЫЕ РЕЙСЫ', 'eblue-ema7m':'ТЁПЛОЕ МОРЕ', 'laguna-bhx7m':'ИЗ БИРМИНГЕМА', 'marvida-ema7m':'ДЛЯ СЕМЕЙ'};
+  var SAMPLE = ['unique-ema7','alila-ltn7','eblue-ema7m'];
+
+  /* ---------- state (per-viewer, this browser only) ---------- */
+  var S = {road:true, tax:true, promo:true, jet2:false, cb:false, fuel:0.17, park:{}, mi:{}, cats:[], region:'all', op:'all', group:'region', sort:'total', view:'cards', stars:[], done:{}};
+  function load(key){ try { var v = JSON.parse(localStorage.getItem(key) || 'null'); return (v && typeof v === 'object') ? v : null; } catch (e) { return null; } }
+  (function(){
+    var saved = load('htd-v2') || load('htd-settings');
+    if (!saved) return;
+    for (var k in saved) {
+      if (!Object.prototype.hasOwnProperty.call(S, k)) continue;
+      if (Array.isArray(S[k]) !== Array.isArray(saved[k]) || typeof S[k] !== typeof saved[k]) continue;
+      S[k] = saved[k];
+    }
+    S.stars = S.stars.filter(function(id){ return !!byId(id); });
+    if (['region','budget','air','op','none'].indexOf(S.group) < 0) S.group = 'region';
+    if (['total','rating','school','drive','sea','price'].indexOf(S.sort) < 0) S.sort = 'total';
+    if (S.region !== 'all' && !REG[S.region]) S.region = 'all';
+    if (S.op !== 'all' && !OPS[S.op]) S.op = 'all';
+  })();
+  function save(){ try { localStorage.setItem('htd-v2', JSON.stringify(S)); } catch (e) {} }
+
+  /* ---------- helpers ---------- */
+  var GBP = new Intl.NumberFormat('en-GB', {style:'currency', currency:'GBP', maximumFractionDigits:0});
+  function money(n){ return GBP.format(Math.round(n)); }
+  function int(n){ return Number(n).toLocaleString('en-GB'); }
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function byId(id){ for (var i = 0; i < D.length; i++) if (D[i].id === id) return D[i]; return null; }
+  function plural(n, f){ var a = Math.abs(n) % 100, b = a % 10; if (a > 10 && a < 20) return f[2]; if (b > 1 && b < 5) return f[1]; if (b === 1) return f[0]; return f[2]; }
+  function variants(n){ return n + ' ' + plural(n, ['вариант','варианта','вариантов']); }
+  var WD = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+  function dt(iso){ var d = new Date(iso + 'T12:00:00'); return WD[d.getDay()] + ' ' + pad(d.getDate()) + '.' + pad(d.getMonth()+1); }
+  function nights(o){ return o.n || Math.round((new Date(o.ret+'T12:00:00') - new Date(o.dep+'T12:00:00'))/86400000); }
+  function school(o){
+    var n = 0, d = new Date(o.dep+'T12:00:00'), end = new Date(o.ret+'T12:00:00');
+    while (d <= end) { var wd = d.getDay(), md = d.getMonth()*100 + d.getDate(); var holiday = md >= 926 && md <= 930; if (wd >= 1 && wd <= 5 && !holiday) n++; d.setDate(d.getDate()+1); }
+    return n;
+  }
+  function schoolList(o){
+    var out = [], d = new Date(o.dep+'T12:00:00'), end = new Date(o.ret+'T12:00:00');
+    while (d <= end) { var wd = d.getDay(), md = d.getMonth()*100 + d.getDate(); if (wd >= 1 && wd <= 5 && !(md >= 926 && md <= 930)) out.push(WD[wd].toLowerCase() + ' ' + pad(d.getDate()) + '.' + pad(d.getMonth()+1)); d.setDate(d.getDate()+1); }
+    return out;
+  }
+  function schoolText(o){ var n = school(o); return n === 0 ? 'только каникулы и выходные' : n + ' ' + plural(n, ['учебный день','учебных дня','учебных дней']) + ': ' + schoolList(o).join(', '); }
+  function isExact(o){ return o.dep === '2026-10-23' && o.ret === '2026-11-01'; }
+  function hm(s){ var m = /(\d{1,2}):(\d{2})/.exec(s || ''); return m ? (+m[1])*60 + (+m[2]) : null; }
+  function clock(min){ min = ((min % 1440) + 1440) % 1440; return pad(Math.floor(min/60)) + ':' + pad(min % 60); }
+  function dur(min){ var h = Math.floor(min/60), m = min % 60; return h && m ? h + ' ч ' + pad(m) : (h ? h + ' ч' : m + ' мин'); }
+  function airInfo(code){ var a = AIR[code]; if (!a) return null; var park = (S.park[code] != null) ? +S.park[code] : a.park; var mi = (S.mi[code] != null) ? +S.mi[code] : a.mi; return {name:a.name, t:a.t, min:a.min, park:park, mi:mi, road:Math.round(2*mi*S.fuel + park)}; }
+
+  function calc(o){
+    var extra = o.extras ? o.extras.reduce(function(sum, e){ return sum + e[1]; }, 0) : (o.extra || 0);
+    var tax = S.tax ? (o.tax || 0) : 0;
+    var ai = airInfo(o.air); var road = (S.road && ai) ? ai.road : 0;
+    var promo = 0, promoName = '';
+    if (S.promo && o.op === 'TUI') { promo = 100; promoName = 'SAVE100'; }
+    if (S.promo && o.op === 'loveholidays') { promo = Math.min(600, Math.floor((o.price + extra)/1500)*150); promoName = 'SPLASH'; }
+    if (S.jet2 && o.op === 'Jet2') { promo = ['STN','LTN','LGW','BRS','BOH'].indexOf(o.air) >= 0 ? 150 : 100; promoName = 'код Jet2'; }
+    var cb = 0;
+    if (S.cb) {
+      if (o.op === 'Jet2') cb = S.jet2 ? 5 : 30;
+      else if (o.op === 'TUI') cb = Math.round(0.015*(o.price - promo));
+      else if (o.op === 'loveholidays') cb = (S.promo ? 0 : Math.round(0.035*(o.price + extra)));
+      else if (o.op === 'On the Beach') cb = Math.round(0.03*o.price);
+    }
+    var total = o.price + extra + tax + road - promo - cb;
+    return {extra:extra, tax:tax, road:road, promo:promo, promoName:promoName, cb:cb, total:total, pp:total/5, ai:ai};
+  }
+
+  /* Travel-day timeline: 2 h check-in + 20 min parking before departure, 1 h for passport and bags after landing. */
+  var PLANS = {};
+  function plan(o){
+    if (PLANS[o.id]) return PLANS[o.id];
+    var a = AIR[o.air], drive = a ? a.min : null, p = {};
+    var out = (o.out || '').split('→');
+    if (out.length === 2 && hm(out[0]) != null && hm(out[1]) != null) {
+      p.dep = hm(out[0]); p.arr = hm(out[1]);
+      var arrAbs = p.arr < p.dep ? p.arr + 1440 : p.arr;
+      if (drive != null) p.leave = p.dep - 140 - drive;
+      if (o.tr) p.hotel = arrAbs + 60 + o.tr;
+    }
+    var back = (o.back || '').split('→');
+    if (back.length === 2) { p.bdep = hm(back[0]); p.barr = hm(back[1]); }
+    else if (/вылет/.test(o.back || '')) { p.bdep = hm(o.back); if (o.eta) { p.barr = hm(o.eta); p.eta = true; } }
+    if (p.barr != null && p.bdep != null && drive != null) { var barrAbs = p.barr < p.bdep ? p.barr + 1440 : p.barr; p.home = barrAbs + 60 + drive; }
+    p.early = p.leave != null && p.leave < 300;
+    p.overnight = p.dep != null && p.arr < p.dep && p.arr >= 300;
+    p.nightHotel = p.hotel != null && p.hotel >= 1440 && p.hotel < 1440 + 360;
+    p.lateHome = p.home != null && p.home >= 1470;
+    p.nightBack = p.bdep != null && p.bdep < 360;
+    p.calm = p.leave != null && p.hotel != null && p.home != null && !p.early && !p.overnight && !p.nightHotel && !p.lateHome && !p.nightBack;
+    return (PLANS[o.id] = p);
+  }
+
+  function analysis(o){
+    var sd = school(o), p = plan(o), R = REG[o.region], A = AIR[o.air];
+    var plus = [], minus = [];
+    if (sd === 0) plus.push('Без пропуска школы: только каникулы и выходные');
+    else if (sd === 1) plus.push('Всего 1 учебный день: ' + schoolList(o).join(', '));
+    else minus.push('Школа: ' + sd + ' ' + plural(sd, ['учебный день','учебных дня','учебных дней']) + ': ' + schoolList(o).join(', '));
+    if (p.calm) plus.push('Удобные рейсы: выезд из дома ≈ ' + clock(p.leave) + ', дома ≈ ' + clock(p.home));
+    if (p.early) minus.push('Ранний вылет ' + clock(p.dep) + ': выезд из дома ≈ ' + clock(p.leave));
+    if (p.nightHotel) minus.push('Прилёт ' + clock(p.arr) + ', в отеле ≈ ' + clock(p.hotel) + ' ночи');
+    if (p.overnight) minus.push('Ночь в дороге: вылет ' + clock(p.dep) + ', прилёт ' + clock(p.arr) + ' на следующее утро' + (o.stops ? ', ' + o.stops : ''));
+    if (p.nightBack) minus.push('Обратный вылет в ' + clock(p.bdep) + ': из отеля выезжать около полуночи');
+    if (p.lateHome) minus.push('Обратный рейс поздно: дома ≈ ' + clock(p.home) + ' ночи');
+    if (A && A.min <= 80) plus.push('Близкий аэропорт: ' + A.name + ', ' + A.t + ' езды');
+    if (A && A.min >= 120) minus.push('Далеко ехать: ' + A.name + ', ' + A.t + ' в одну сторону');
+    if (o.rt === '2b') plus.push('Две спальни: дети спят отдельно');
+    if (o.rt === '2r') plus.push('Два номера на семью');
+    if (o.ta >= 4.6) plus.push('Очень хорошие отзывы: ' + o.ta.toFixed(1) + ' из 5');
+    if (o.ta < 4.2) minus.push('Отзывы ниже остальных: ' + o.ta.toFixed(1) + ' из 5');
+    if (/^5/.test(o.stars)) plus.push('Пять звёзд');
+    if (R.plus) plus.push(R.plus);
+    if (R.minus) minus.push(R.minus);
+    if (o.incl === 'b') minus.push('Трансфер не включён, в итог добавил ≈ ' + money(calc(o).extra));
+    if (o.incl === '') minus.push((o.diy ? 'Перелёт, багаж и трансфер не входят' : 'Багаж и трансфер не включены') + ', в итог добавил ≈ ' + money(calc(o).extra));
+    if (o.diy) minus.push('Нет защиты ATOL: отель и перелёт покупаются отдельно');
+    if (o.beds3) minus.push('3 кровати на пятерых, дополнительных кроватей нет');
+    (o.tags || []).forEach(function(t){
+      var s = t[0];
+      if (/^Осталось/.test(s)) minus.push('Мало мест: ' + s.toLowerCase());
+      else if (/детское место/.test(s)) plus.push('Бесплатное детское место уже в цене');
+      else if (s === 'Цена перепроверена') plus.push('Цена перепроверена на странице отеля');
+      else if (s === 'Проверено в корзине') plus.push('Цена проверена в корзине');
+      else if (/^Аквапарк/.test(s)) plus.push('Аквапарк в отеле');
+      else if (/прямой брони/.test(s)) plus.push('Пакет дешевле прямой брони в отеле');
+      else if (/^В поиске было/.test(s)) minus.push(s + ', в корзине выросла');
+      else if (/^Визы/.test(s)) minus.push('Нужны визы: $30 × 5, уже в итоге');
+      else if (/^Бесплатно 2 детей/.test(s)) plus.push('Дети 4 и 6 лет живут бесплатно');
+      else if (/^Скидка/.test(s)) plus.push(s + ' от прежней цены оператора');
+    });
+    if (o.op === 'loveholidays' && !(o.tags || []).some(function(t){ return t[0] === 'Проверено в корзине'; })) minus.push('У loveholidays цена в корзине бывает выше, чем в поиске');
+    if (p.dep == null) minus.push('Время рейсов не указано, уточняйте на сайте');
+    return {plus:plus, minus:minus};
+  }
+
+  /* ---------- categories ---------- */
+  var CATS = [
+    {id:'picks', label:'Шорт-лист', test:function(o){ return PICKS.indexOf(o.id) >= 0; }},
+    {id:'mine', label:'Ваш отель с Booking', test:function(o){ return /Crystal Prestige/.test(o.hotel); }},
+    {id:'cheap', label:'Итог до £4,000', test:function(o, c){ return c.total < 4000; }},
+    {id:'noschool', label:'Без пропуска школы', test:function(o){ return school(o) === 0; }},
+    {id:'near', label:'Аэропорт до 1 ч 20', test:function(o){ var a = AIR[o.air]; return !!a && a.min <= 80; }},
+    {id:'calm', label:'Удобное время рейсов', test:function(o){ return plan(o).calm; }},
+    {id:'school', label:'Не больше 1 учебного дня', test:function(o){ return school(o) <= 1; }},
+    {id:'rooms', label:'Две спальни или 2 номера', test:function(o){ return o.rt === '2b' || o.rt === '2r'; }},
+    {id:'aiplus', label:'Олл-инклюзив Plus и Ultra', test:function(o){ return o.board !== 'AI'; }},
+    {id:'top', label:'Отзывы 4.5+', test:function(o){ return o.ta >= 4.5; }},
+    {id:'five', label:'5 звёзд', test:function(o){ return /^5/.test(o.stars); }},
+    {id:'fav', label:'Отмеченные ☆', test:function(o){ return S.stars.indexOf(o.id) >= 0; }}
+  ];
+  function catById(id){ for (var i = 0; i < CATS.length; i++) if (CATS[i].id === id) return CATS[i]; return null; }
+
+  /* ---------- shared fragments ---------- */
+  function li(cls){ return function(t){ return '<li class="' + cls + '">' + esc(t) + '</li>'; }; }
+  function tagsHTML(o){ return (o.tags || []).map(function(t){ return '<span class="tag ' + (t[1] || '') + '">' + esc(t[0]) + '</span>'; }).join(''); }
+  function incl(o){
+    var b = o.incl.indexOf('b') >= 0, t = o.incl.indexOf('t') >= 0;
+    return '<span class="inc">' + (o.diy ? '<span class="n">✕ перелёт</span> · ' : '') + '<span class="' + (b ? 'y' : 'n') + '">' + (b ? '✓' : '✕') + ' багаж</span> · <span class="' + (t ? 'y' : 'n') + '">' + (t ? '✓' : '✕') + ' трансфер</span></span>';
+  }
+  var BOARD = {'AI':{label:'Олл-инклюзив', g:'g-ai'}, 'AI Plus':{label:'Олл-инклюзив Plus', g:'g-aiplus'}, 'Ultra AI':{label:'Ультра олл-инклюзив', g:'g-aiplus'}};
+  function aiPill(o){ var b = BOARD[o.board] || {label:o.board, g:'g-ai'}; return '<a class="aipill" href="#' + b.g + '" title="Что входит: открыть словарик">' + b.label + '</a>'; }
+  function placeLine(o){ return esc(o.place) + ' · ' + o.stars + ' · TripAdvisor ' + o.ta.toFixed(1) + ' (' + int(o.rev) + ' отз.)'; }
+  function starBtn(o){
+    var on = S.stars.indexOf(o.id) >= 0;
+    return '<button type="button" class="star" data-star="' + o.id + '" aria-pressed="' + on + '" aria-label="' + (on ? 'Убрать из сравнения: ' : 'Добавить в сравнение: ') + esc(o.hotel) + '" title="' + (on ? 'Убрать из сравнения' : 'Добавить в сравнение') + '">' + (on ? '★' : '☆') + '</button>';
+  }
+  function linksHTML(o){
+    var q = o.q || o.hotel, L = [
+      ['Отзывы TripAdvisor', 'https://www.tripadvisor.co.uk/Search?q=' + encodeURIComponent(q)],
+      ['На карте', 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q)],
+      ['Видео-обзоры', 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' hotel review')]
+    ];
+    if (o.site) L.push(['Сайт отеля', o.site]);
+    return '<div class="links">' + L.map(function(l){ return '<a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + l[0] + ' ↗</a>'; }).join('') + '</div>';
+  }
+  function outText(o){
+    var p = plan(o);
+    if (p.dep == null) return dt(o.dep) + ' · ' + esc(o.out) + '<span class="s">время уточняйте на сайте</span>';
+    var sub = [];
+    if (p.leave != null) sub.push('выезд из дома ≈ ' + clock(p.leave));
+    if (p.hotel != null) sub.push('в отеле ≈ ' + clock(p.hotel) + (p.nightHotel ? ' ночи' : ''));
+    return dt(o.dep) + ' · вылет ' + clock(p.dep) + ' → прилёт ' + clock(p.arr) + (p.arr < p.dep ? ' +1' : '') + (sub.length ? '<span class="s">' + sub.join(' · ') + '</span>' : '');
+  }
+  function backText(o){
+    var p = plan(o);
+    if (p.bdep == null) return dt(o.ret) + '<span class="s">время уточняйте на сайте</span>';
+    return dt(o.ret) + ' · вылет ' + clock(p.bdep) + (p.barr != null ? ' → посадка ' + (p.eta ? '≈ ' : '') + clock(p.barr) + (p.barr < p.bdep ? ' +1' : '') : '') + (p.home != null ? '<span class="s">дома ≈ ' + clock(p.home) + (p.lateHome ? ' ночи' : '') + '</span>' : '');
+  }
+  function detailsDL(o){
+    var ai = airInfo(o.air);
+    return '<dl class="kv">' +
+      '<dt>Туда</dt><dd class="mono">' + outText(o) + '</dd>' +
+      '<dt>Обратно</dt><dd class="mono">' + backText(o) + '</dd>' +
+      (o.tr ? '<dt>Трансфер</dt><dd>≈ ' + dur(o.tr) + ' от аэропорта ' + (DEST_AIR[o.to] || o.to) + '</dd>' : '') +
+      '<dt>Питание</dt><dd>' + aiPill(o) + '</dd>' +
+      '<dt>Номер</dt><dd>' + esc(o.room) + '</dd>' +
+      '<dt>Включено</dt><dd>' + incl(o) + '</dd>' +
+      (o.kids ? '<dt>Для детей</dt><dd>' + esc(o.kids).replace(/не подтверждено/g, '<span class="unconf">не подтверждено</span>') + '</dd>' : '') +
+      '<dt>Аэропорт</dt><dd>' + (ai ? ai.name + ', ' + ai.t + ' от Бракли' : o.air) + '</dd>' +
+      '<dt>Школа</dt><dd>' + schoolText(o) + '</dd>' +
+    '</dl>';
+  }
+  function breakdownHTML(o, c){
+    var lines = '<span>' + (o.priceLabel ? esc(o.priceLabel) : 'Путёвка ' + o.op) + '</span><span>' + money(o.price) + '</span>';
+    if (o.extras) o.extras.forEach(function(e){ lines += '<span>' + esc(e[0]) + '</span><span>' + money(e[1]) + '</span>'; });
+    else if (c.extra) lines += '<span>' + esc(o.extraLabel || 'Доплаты') + '</span><span>' + money(c.extra) + '</span>';
+    if (c.tax) lines += '<span>Налог на месте</span><span>' + money(c.tax) + '</span>';
+    if (c.road) lines += '<span>Дорога до ' + o.air + ' и парковка</span><span>' + money(c.road) + '</span>';
+    if (c.promo) lines += '<span class="minus">Промокод ' + c.promoName + '</span><span class="minus">−' + money(c.promo) + '</span>';
+    if (c.cb) lines += '<span class="minus">Кэшбэк</span><span class="minus">−' + money(c.cb) + '</span>';
+    return '<div class="breakdown">' + lines + '</div><div class="grand"><span>Итого на семью · ' + money(c.pp) + ' на человека</span><b>' + money(c.total) + '</b></div>';
+  }
+
+  /* ---------- hero board ---------- */
+  function renderBoard(){
+    var ids = PICKS.concat(D.filter(function(o){ return o.mine; }).map(function(o){ return o.id; }));
+    var rows = ids.map(byId).map(function(o){ return {o:o, c:calc(o)}; }).sort(function(a, b){ return a.c.total - b.c.total; });
+    document.getElementById('boardRows').innerHTML = rows.map(function(r){
+      var o = r.o;
+      return '<a class="brow' + (o.mine ? ' mine' : '') + '" href="#' + (o.mine ? 'mine' : 'p-' + o.id) + '"><span class="when">' + dt(o.dep) + '<small>' + nights(o) + ' ноч. · до ' + dt(o.ret) + '</small></span><span class="route">' + o.air + ' → ' + o.to + '</span><span class="hotel">' + esc(o.hotel) + '<small>' + esc(o.place) + ' · ' + o.board + ' · ' + o.op + '</small></span><span class="remark">' + (o.mine ? 'ВАШ ВАРИАНТ' : PICK_REMARK[o.id]) + '</span><span class="total">' + money(r.c.total) + '</span></a>';
+    }).join('');
+    var parts = [];
+    if (S.road) parts.push('дорогу и парковку');
+    if (S.tax) parts.push('налоги на месте');
+    if (S.promo || S.jet2) parts.push('промокоды');
+    if (S.cb) parts.push('кэшбэк');
+    document.getElementById('incNote').textContent = parts.length ? parts.join(', ') : 'только цену путёвки и доплаты';
+    document.getElementById('boardSub').textContent = 'ИТОГО' + (S.road ? ' С ДОРОГОЙ' : ' БЕЗ ДОРОГИ') + (S.tax ? ', НАЛОГАМИ' : '') + (S.promo || S.jet2 ? ' И КОДАМИ' : '') + (S.cb ? ' И КЭШБЭКОМ' : '');
+  }
+
+  /* ---------- shortlist passes ---------- */
+  function renderPasses(){
+    document.getElementById('passes').innerHTML = PICKS.map(byId).map(function(o){
+      var c = calc(o), a = analysis(o);
+      return '<article class="pass" id="p-' + o.id + '">' +
+        '<div class="pass-head"><span class="badge">' + PICK_LABEL[o.id] + '</span><span class="right"><span class="op">' + o.op + '</span>' + starBtn(o) + '</span></div>' +
+        '<div class="pass-body">' +
+          '<div class="route"><span>' + o.air + '</span><span class="arrow" aria-hidden="true"></span><span>' + o.to + '</span></div>' +
+          '<div><h3>' + esc(o.hotel) + '</h3><p class="place">' + placeLine(o) + '</p></div>' +
+          detailsDL(o) +
+          '<ul class="pc">' + a.plus.map(li('p')).join('') + a.minus.map(li('m')).join('') + '</ul>' +
+          (o.why ? '<p class="why">' + esc(o.why) + '</p>' : '') +
+        '</div>' +
+        '<div class="pass-stub">' + breakdownHTML(o, c) +
+          '<a class="btn primary" href="' + esc(o.link) + '" target="_blank" rel="noopener">Открыть у ' + o.op + ' ↗</a>' +
+          linksHTML(o) +
+        '</div>' +
+      '</article>';
+    }).join('');
+  }
+
+  /* ---------- catalogue ---------- */
+  var OPEN = {};
+  function seaOf(o){ return REG[o.region].sea[1]; }
+  function sorter(a, b){
+    var ca = calc(a), cb = calc(b);
+    if (S.sort === 'price') return a.price - b.price;
+    if (S.sort === 'rating') return b.ta - a.ta || ca.total - cb.total;
+    if (S.sort === 'school') return school(a) - school(b) || ca.total - cb.total;
+    if (S.sort === 'drive') return (AIR[a.air] ? AIR[a.air].min : 999) - (AIR[b.air] ? AIR[b.air].min : 999) || ca.total - cb.total;
+    if (S.sort === 'sea') return seaOf(b) - seaOf(a) || ca.total - cb.total;
+    return ca.total - cb.total;
+  }
+  function filtered(){
+    var active = S.cats.map(catById).filter(Boolean);
+    return D.filter(function(o){
+      if (S.region !== 'all' && o.region !== S.region) return false;
+      if (S.op !== 'all' && o.op !== S.op) return false;
+      var c = calc(o);
+      for (var i = 0; i < active.length; i++) if (!active[i].test(o, c)) return false;
+      return true;
+    });
+  }
+  function bandOf(total){ for (var i = 0; i < BANDS.length; i++) if (total < BANDS[i].max) return i; return BANDS.length - 1; }
+  function minTotal(list){ return Math.min.apply(null, list.map(function(o){ return calc(o).total; })); }
+  function groupsOf(list){
+    if (S.group === 'none') return [{key:'all', title:'', desc:'', items:list.slice().sort(sorter)}];
+    var map = {}, keys = [];
+    list.forEach(function(o){
+      var k = S.group === 'budget' ? String(bandOf(calc(o).total)) : S.group === 'air' ? o.air : S.group === 'op' ? o.op : o.region;
+      if (!map[k]) { map[k] = []; keys.push(k); }
+      map[k].push(o);
+    });
+    var groups = keys.map(function(k){
+      var items = map[k].sort(sorter), g = {key:k, items:items, min:minTotal(items)};
+      if (S.group === 'region') { var R = REG[k]; g.title = R.name; g.desc = 'Море ' + seaText(R) + ', воздух ' + R.air + ', перелёт ' + R.fly + ', трансфер ' + R.transfer + '. ' + R.season; }
+      else if (S.group === 'budget') { g.title = BANDS[+k].label; g.desc = 'Итог на семью ' + BANDS[+k].note + '.'; }
+      else if (S.group === 'air') { var ai = airInfo(k); g.title = k + ' · ' + ai.name; g.desc = ai.t + ' от Бракли, дорога и парковка ' + money(ai.road) + '.'; }
+      else { g.title = OPS[k].name; g.desc = OPS[k].brief; }
+      return g;
+    });
+    groups.sort(function(a, b){
+      if (S.group === 'budget') return +a.key - +b.key;
+      if (S.group === 'air') return AIR[a.key].min - AIR[b.key].min;
+      return a.min - b.min;
+    });
+    return groups;
+  }
+  function seaText(R){ return (R.sea[0] === R.sea[1] ? R.sea[0] : R.sea[0] + '–' + R.sea[1]) + '°'; }
+
+  function cardHTML(o){
+    var c = calc(o), a = analysis(o), isPick = PICKS.indexOf(o.id) >= 0, isMine = !!o.mine;
+    var top = a.plus.slice(0, 3).map(li('p')).join('') + a.minus.slice(0, 3).map(li('m')).join('');
+    var rest = a.plus.slice(3).map(li('p')).join('') + a.minus.slice(3).map(li('m')).join('');
+    return '<article class="card' + (isPick ? ' is-pick' : '') + (isMine ? ' is-mine' : '') + '" id="c-' + o.id + '">' +
+      '<div class="card-top"><span class="op">' + o.op + '</span>' + (isPick ? '<span class="pickmark">шорт-лист</span>' : '') + (isMine ? '<span class="minemark">ваш вариант</span>' : '') + '<span class="grow"></span>' + starBtn(o) + '</div>' +
+      '<div class="card-main"><div><h4>' + esc(o.hotel) + '</h4><p class="s">' + placeLine(o) + '</p></div>' +
+        '<div class="price"><b>' + money(c.total) + '</b><span>' + money(c.pp) + ' / чел.</span></div></div>' +
+      '<div class="trip"><span>' + o.air + ' → ' + o.to + '</span><span>' + dt(o.dep) + ' → ' + dt(o.ret) + '</span><span>' + nights(o) + ' ноч.</span></div>' +
+      '<div class="incl-line">' + aiPill(o) + ' ' + incl(o) + ' · ' + RT[o.rt] + '</div>' +
+      '<ul class="pc">' + top + '</ul>' +
+      '<details class="more" data-id="' + o.id + '"' + (OPEN[o.id] ? ' open' : '') + '><summary>Подробнее: расчёт, рейсы, ссылки</summary><div class="more-body">' +
+        (rest ? '<ul class="pc">' + rest + '</ul>' : '') +
+        detailsDL(o) +
+        (o.tags && o.tags.length ? '<div class="tags">' + tagsHTML(o) + '</div>' : '') +
+        (o.why ? '<p class="why">' + esc(o.why) + '</p>' : '') +
+        breakdownHTML(o, c) +
+        '<p class="mini">' + OPS[o.op].note + '</p>' +
+        linksHTML(o) +
+      '</div></details>' +
+      '<div class="card-actions"><a class="btn primary" href="' + esc(o.link) + '" target="_blank" rel="noopener">Открыть у ' + o.op + ' ↗</a></div>' +
+    '</article>';
+  }
+  function rowHTML(o){
+    var c = calc(o), sd = school(o), disc = c.promo + c.cb;
+    return '<tr class="' + (o.mine ? 'mine' : PICKS.indexOf(o.id) >= 0 ? 'hl' : '') + '">' +
+      '<td>' + starBtn(o) + '</td>' +
+      '<td><div class="h">' + esc(o.hotel) + '</div><div class="s">' + esc(o.place) + ' · ' + o.stars + ' · TA ' + o.ta.toFixed(1) + ' (' + int(o.rev) + ')</div><div class="tags" style="margin-top:4px">' + tagsHTML(o) + '</div></td>' +
+      '<td><span class="op">' + o.op + '</span><div class="s mono" style="margin-top:4px">' + o.air + ' → ' + o.to + '</div><div class="s">' + (c.ai ? c.ai.t + ' езды' : '') + '</div></td>' +
+      '<td class="mono" style="white-space:nowrap">' + dt(o.dep) + ' → ' + dt(o.ret) + '<div class="s">' + nights(o) + ' ноч.' + (isExact(o) ? ' · ваши даты' : '') + '</div><div class="s">школа: ' + sd + ' дн.</div></td>' +
+      '<td><div>' + esc(o.room) + '</div><div style="margin:4px 0">' + aiPill(o) + '</div>' + incl(o) + '</td>' +
+      '<td class="num">' + money(o.price) + '</td>' +
+      '<td class="num">' + ((c.extra + c.tax) ? money(c.extra + c.tax) : '—') + '</td>' +
+      '<td class="num">' + (c.road ? money(c.road) : '—') + '</td>' +
+      '<td class="num">' + (disc ? '−' + money(disc) : '—') + '</td>' +
+      '<td class="num total">' + money(c.total) + '</td>' +
+      '<td class="num">' + money(c.pp) + '</td>' +
+      '<td><a class="btn small" href="' + esc(o.link) + '" target="_blank" rel="noopener">Открыть ↗</a></td>' +
+    '</tr>';
+  }
+
+  function renderChips(){
+    var html = CATS.map(function(k){
+      var n = D.filter(function(o){ return k.test(o, calc(o)); }).length, on = S.cats.indexOf(k.id) >= 0;
+      return '<button type="button" class="chipbtn" data-cat="' + k.id + '" aria-pressed="' + on + '">' + k.label + ' <span class="n">' + n + '</span></button>';
+    }).join('');
+    var any = S.cats.length || S.region !== 'all' || S.op !== 'all';
+    html += '<button type="button" class="chipbtn ghost" data-reset="1"' + (any ? '' : ' hidden') + '>Сбросить фильтры</button>';
+    document.getElementById('chips').innerHTML = html;
+  }
+
+  function renderCatalog(){
+    var list = filtered(), box = document.getElementById('results');
+    var active = S.cats.map(catById).filter(Boolean).map(function(k){ return k.label; });
+    if (S.region !== 'all') active.push(REG[S.region].name);
+    if (S.op !== 'all') active.push(OPS[S.op].name);
+    document.getElementById('count').textContent = 'Показано ' + list.length + ' из ' + D.length + (active.length ? ' · ' + active.join(' + ') : '') + '. Жёлтая рамка — шорт-лист, красная — ваш вариант с Booking.';
+    if (!list.length) {
+      box.innerHTML = '<div class="empty"><p>С такими условиями ничего не нашлось. Снимите одну из категорий.</p><button type="button" class="btn" data-reset="1">Сбросить фильтры</button></div>';
+      return;
+    }
+    var groups = groupsOf(list);
+    if (S.view === 'table') {
+      var head = '<thead><tr><th><span class="s">☆</span></th><th>Отель</th><th>Оператор · вылет</th><th>Даты</th><th>Номер · включено</th><th class="num">Путёвка</th><th class="num">Доплаты</th><th class="num">Дорога</th><th class="num">Скидки</th><th class="num">Итого</th><th class="num">На чел.</th><th></th></tr></thead>';
+      box.innerHTML = '<div class="scroll"><table class="ledger">' + head + '<tbody>' + groups.map(function(g){
+        return (g.title ? '<tr class="grp"><td colspan="12"><b>' + esc(g.title) + '</b><span class="s">' + variants(g.items.length) + ', от ' + money(g.min) + '</span></td></tr>' : '') + g.items.map(rowHTML).join('');
+      }).join('') + '</tbody></table></div>';
+      return;
+    }
+    box.innerHTML = '<div class="results">' + groups.map(function(g){
+      return '<div class="group">' +
+        (g.title ? '<div class="ghead"><h3>' + esc(g.title) + '</h3><span class="gmeta">' + variants(g.items.length) + ' · от ' + money(g.min) + '</span>' + (g.desc ? '<p>' + esc(g.desc) + '</p>' : '') + '</div>' : '') +
+        '<div class="cards">' + g.items.map(cardHTML).join('') + '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  /* ---------- comparison ---------- */
+  function renderCompare(){
+    var mine = S.stars.length > 0, list = (mine ? S.stars : SAMPLE).map(byId).filter(Boolean);
+    document.getElementById('cmpNote').textContent = mine
+      ? 'Отмеченные ☆ варианты бок о бок (' + list.length + '). Зелёным выделено лучшее значение в строке.'
+      : 'Вы пока ничего не отметили, поэтому для примера здесь три варианта из шорт-листа. Нажмите ☆ на любой карточке, и сравнение соберётся из ваших вариантов.';
+    var C = list.map(function(o){ return {o:o, c:calc(o), a:analysis(o)}; });
+    var rows = [
+      {label:'Итого на семью', html:function(x){ return '<b class="mono">' + money(x.c.total) + '</b>'; }, val:function(x){ return x.c.total; }, best:'min'},
+      {label:'На человека', html:function(x){ return '<span class="mono">' + money(x.c.pp) + '</span>'; }},
+      {label:'Направление', html:function(x){ var R = REG[x.o.region]; return R.name + '<div class="s">море ' + seaText(R) + ', воздух ' + R.air + '</div>'; }, val:function(x){ return seaOf(x.o); }, best:'max'},
+      {label:'Даты', html:function(x){ return '<span class="mono">' + dt(x.o.dep) + ' → ' + dt(x.o.ret) + '</span><div class="s">' + nights(x.o) + ' ночей' + (isExact(x.o) ? ', ровно ваши даты' : '') + '</div>'; }},
+      {label:'Пропуск школы', html:function(x){ return schoolText(x.o); }, val:function(x){ return school(x.o); }, best:'min'},
+      {label:'Аэропорт', html:function(x){ var ai = x.c.ai; return ai ? '<b class="mono">' + x.o.air + '</b> ' + ai.name + '<div class="s">' + ai.t + ' от Бракли</div>' : x.o.air; }, val:function(x){ return AIR[x.o.air] ? AIR[x.o.air].min : 999; }, best:'min'},
+      {label:'Туда', html:function(x){ return '<span class="mono">' + outText(x.o) + '</span>'; }},
+      {label:'Обратно', html:function(x){ return '<span class="mono">' + backText(x.o) + '</span>'; }},
+      {label:'Трансфер', html:function(x){ return x.o.tr ? '≈ ' + dur(x.o.tr) : 'уточняйте'; }, val:function(x){ return x.o.tr || 999; }, best:'min'},
+      {label:'Номер', html:function(x){ return esc(x.o.room) + '<div class="s">' + RT[x.o.rt] + '</div>'; }},
+      {label:'Питание и включено', html:function(x){ return aiPill(x.o) + '<div style="margin-top:6px">' + incl(x.o) + '</div>'; }},
+      {label:'TripAdvisor', html:function(x){ return '<b class="mono">' + x.o.ta.toFixed(1) + '</b> <span class="s">(' + int(x.o.rev) + ' отз.)</span>'; }, val:function(x){ return x.o.ta; }, best:'max'},
+      {label:'Плюсы', html:function(x){ return '<ul class="pc">' + x.a.plus.map(li('p')).join('') + '</ul>'; }},
+      {label:'Минусы', html:function(x){ return x.a.minus.length ? '<ul class="pc">' + x.a.minus.map(li('m')).join('') + '</ul>' : '—'; }},
+      {label:'Ссылки', html:function(x){ return '<div class="stack" style="gap:8px"><a class="btn small primary" href="' + esc(x.o.link) + '" target="_blank" rel="noopener">Открыть у ' + x.o.op + ' ↗</a>' + linksHTML(x.o) + '</div>'; }}
+    ];
+    var head = '<thead><tr><th>Вариант</th>' + C.map(function(x){
+      return '<th><div class="hcell"><div class="row"><span class="op">' + x.o.op + '</span>' + starBtn(x.o) + '</div><span>' + esc(x.o.hotel) + '</span><span class="s">' + esc(x.o.place) + ' · ' + x.o.stars + '</span></div></th>';
+    }).join('') + '</tr></thead>';
+    var body = rows.map(function(r){
+      var best = null;
+      if (r.best && C.length > 1) {
+        var vals = C.map(r.val), target = r.best === 'min' ? Math.min.apply(null, vals) : Math.max.apply(null, vals);
+        var hits = vals.filter(function(v){ return v === target; }).length;
+        if (hits < C.length) best = target;
+      }
+      return '<tr><th scope="row">' + r.label + '</th>' + C.map(function(x){
+        var isBest = best !== null && r.val(x) === best;
+        return '<td' + (isBest ? ' class="best"' : '') + '>' + (isBest ? '<span class="bestmark">лучшее</span>' : '') + r.html(x) + '</td>';
+      }).join('') + '</tr>';
+    }).join('');
+    document.getElementById('cmpBox').innerHTML = '<div class="scroll"><table class="cmp" style="min-width:' + (150 + C.length*220) + 'px">' + head + '<tbody>' + body + '</tbody></table></div>';
+  }
+
+  /* ---------- destinations ---------- */
+  function renderDest(){
+    var keys = Object.keys(REG).slice().sort(function(a, b){ return REG[b].sea[1] - REG[a].sea[1] || REG[b].sea[0] - REG[a].sea[0]; });
+    var lo = 20, hi = 30, span = hi - lo;
+    var rows = keys.map(function(k){
+      var R = REG[k], a = (R.sea[0] - lo)/span*100, b = (R.sea[1] - lo)/span*100;
+      var mark = R.sea[0] === R.sea[1] ? '<span class="dot-mark" style="left:' + a + '%"></span>' : '<span class="bar-mark" style="left:' + a + '%;width:' + (b - a) + '%"></span>';
+      return '<div class="crow"><span>' + R.short + '</span><span class="track">' + mark + '</span><span class="cval mono">' + seaText(R) + '</span></div>';
+    }).join('');
+    var ticks = ''; for (var t = lo; t <= hi; t += 2) ticks += '<span style="left:' + ((t - lo)/span*100) + '%">' + t + '°</span>';
+    document.getElementById('seaChart').innerHTML = '<p class="chart-title">Температура моря в конце октября, °C</p>' + rows + '<div class="crow axis" aria-hidden="true"><span></span><span class="ticks">' + ticks + '</span><span></span></div>';
+
+    document.getElementById('regs').innerHTML = Object.keys(REG).map(function(k){
+      var R = REG[k], items = D.filter(function(o){ return o.region === k; });
+      return '<article class="box">' +
+        '<div><h3>' + R.name + '</h3><p class="s">' + R.resorts + '</p></div>' +
+        '<dl class="kv">' +
+          '<dt>Воздух / море</dt><dd class="mono">' + R.air + ' / ' + seaText(R) + '</dd>' +
+          '<dt>Перелёт</dt><dd>' + R.fly + ', время ' + R.tz + '</dd>' +
+          '<dt>Трансфер</dt><dd>' + R.transfer + '</dd>' +
+          '<dt>Сезон</dt><dd>' + R.season + '</dd>' +
+          '<dt>Налог</dt><dd>' + R.tax + '</dd>' +
+          '<dt>Въезд</dt><dd>' + R.entry + '</dd>' +
+        '</dl>' +
+        '<div class="reg-foot"><span class="found">' + variants(items.length) + ', от ' + money(minTotal(items)) + '</span>' +
+          '<button type="button" class="btn small" data-show-region="' + k + '">Показать</button>' +
+          '<a class="mini" href="https://www.gov.uk/foreign-travel-advice/' + R.fcdo + '/entry-requirements" target="_blank" rel="noopener">FCDO: ' + R.fcdoName + ' ↗</a></div>' +
+      '</article>';
+    }).join('');
+  }
+
+  /* ---------- operators ---------- */
+  function renderOps(){
+    var head = '<thead><tr><th>Оператор</th><th>Багаж</th><th>Трансфер</th><th>Промокод</th><th>Кэшбэк</th><th>Что заметил</th><th>Ссылки</th></tr></thead>';
+    var body = Object.keys(OPS).map(function(k){
+      var O = OPS[k], items = D.filter(function(o){ return o.op === k; });
+      var links = '<a href="' + esc(O.site) + '" target="_blank" rel="noopener">Сайт ↗</a>' + (O.hud ? '<a href="' + esc(O.hud) + '" target="_blank" rel="noopener">Коды ↗</a>' : '') + (O.tcb ? '<a href="' + esc(O.tcb) + '" target="_blank" rel="noopener">Кэшбэк ↗</a>' : '');
+      return '<tr><th scope="row"><b>' + O.name + '</b><div class="s">' + variants(items.length) + ', от ' + money(minTotal(items)) + '</div><button type="button" class="btn small" style="margin-top:6px" data-show-op="' + esc(k) + '">Показать</button></th>' +
+        '<td>' + O.bags + '</td><td>' + O.transfer + '</td><td>' + O.code + '</td><td>' + O.cb + '</td><td>' + O.seen + '</td><td><div class="links" style="flex-direction:column;gap:6px">' + links + '</div></td></tr>';
+    }).join('');
+    document.getElementById('opsTable').innerHTML = head + '<tbody>' + body + '</tbody>';
+  }
+
+  /* ---------- airports ---------- */
+  function renderAirports(){
+    var used = {}; D.forEach(function(o){ used[o.air] = true; });
+    var codes = Object.keys(AIR).filter(function(k){ return used[k]; }).sort(function(a, b){ return AIR[a].min - AIR[b].min; });
+    document.querySelector('#airTable tbody').innerHTML = codes.map(function(k){
+      var ai = airInfo(k);
+      return '<tr><td><b class="mono">' + k + '</b> ' + ai.name + '</td>' +
+        '<td class="num"><input type="number" min="0" step="1" id="mi-' + k + '" data-mi="' + k + '" value="' + ai.mi + '" aria-label="Мили до ' + k + '"></td>' +
+        '<td class="num">' + ai.t + '</td>' +
+        '<td class="num"><input type="number" min="0" step="5" id="park-' + k + '" data-park="' + k + '" value="' + ai.park + '" aria-label="Парковка ' + k + '"></td>' +
+        '<td class="num" id="road-' + k + '">' + money(ai.road) + '</td></tr>';
+    }).join('');
+    document.getElementById('codes').innerHTML = codes.map(function(k){ return '<span><b>' + k + '</b>' + AIR[k].name + ', ' + AIR[k].t + '</span>'; }).join('') +
+      Object.keys(DEST_AIR).map(function(k){ return '<span><b>' + k + '</b>' + DEST_AIR[k] + '</span>'; }).join('');
+  }
+  function refreshRoadCells(){ Object.keys(AIR).forEach(function(k){ var el = document.getElementById('road-' + k); if (el) el.textContent = money(airInfo(k).road); }); }
+
+  /* ---------- page-level bits ---------- */
+  function renderFab(){
+    var fab = document.getElementById('fab');
+    fab.hidden = S.stars.length === 0;
+    document.getElementById('fabN').textContent = S.stars.length;
+  }
+  /* ---------- the family's Booking.com find ---------- */
+  function renderMine(){
+    var b = byId('crystal-booking'), tb = document.getElementById('mineTable');
+    if (!b || !tb) return;
+    var cb = calc(b), alts = ['alila-ltn7', 'eblue-ema8', 'unique-ema7'].map(byId).filter(Boolean);
+    var rows = '<tr><td>' + esc(b.priceLabel) + '<div class="s">семейный номер 50 м², невозвратный тариф</div></td><td class="num">' + money(b.price) + '</td></tr>' +
+      b.extras.map(function(e){ return '<tr><td>' + esc(e[0]) + '</td><td class="num">' + money(e[1]) + '</td></tr>'; }).join('') +
+      (cb.road ? '<tr><td>Дорога до Бирмингема и парковка</td><td class="num">' + money(cb.road) + '</td></tr>' : '') +
+      '<tr class="sum"><td>Итого самостоятельно · ' + money(cb.pp) + ' на человека</td><td class="num">' + money(cb.total) + '</td></tr>' +
+      alts.map(function(o){ var c = calc(o); return '<tr class="alt"><td><b>' + esc(o.hotel) + '</b> пакетом у Jet2<div class="s">' + esc(o.place) + ', ' + dt(o.dep) + ' → ' + dt(o.ret) + ', без пропуска школы, с дорогой</div></td><td class="num"><b>' + money(c.total) + '</b></td></tr>'; }).join('');
+    tb.innerHTML = '<tbody>' + rows + '</tbody>';
+    var a = alts[0] ? calc(alts[0]).total : 0, e = alts[1] ? calc(alts[1]).total : 0;
+    document.getElementById('mineVerdict').innerHTML = '<b>Невыгодно и на 7 ночей.</b> Отель на Booking дешёвый, но перелёт на каникулы для пятерых стоит дороже самого отеля, и «под ключ» выходит ' + money(cb.total) + '. Пакеты без пропуска школы дешевле: пятёрка Mitsis Alila на Родосе — ' + money(a) + ', Eftalia Blue в Аланье на 8 ночей — ' + money(e) + '.';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-total]'), function(el){ var o = byId(el.getAttribute('data-total')); if (o) el.textContent = money(calc(o).total); });
+  }
+
+  function renderAll(){
+    renderMine(); renderBoard(); renderPasses(); renderChips(); renderCatalog(); renderCompare(); renderDest(); renderOps(); refreshRoadCells(); renderFab();
+  }
+  function scrollToId(id){
+    var el = document.getElementById(id); if (!el) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
+  }
+
+  (function(){
+    var now = new Date(), a = Date.UTC(2026, 9, 23), b = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    var days = Math.round((a - b)/86400000), el = document.getElementById('countdown');
+    if (days > 0) { el.textContent = 'До вылета 23.10: ' + days + ' ' + plural(days, ['день','дня','дней']); el.hidden = false; }
+  })();
+  document.getElementById('nAll').textContent = D.length;
+  document.getElementById('calmN').textContent = D.filter(function(o){ return plan(o).calm; }).length;
+
+  /* ---------- controls ---------- */
+  function bindToggle(id, key){ var el = document.getElementById(id); el.checked = !!S[key]; el.addEventListener('change', function(){ S[key] = el.checked; save(); renderAll(); }); }
+  bindToggle('optRoad','road'); bindToggle('optTax','tax'); bindToggle('optPromo','promo'); bindToggle('optJet2','jet2'); bindToggle('optCb','cb');
+
+  var fRegion = document.getElementById('fRegion'), fOp = document.getElementById('fOp');
+  fRegion.innerHTML = '<option value="all">Все</option>' + Object.keys(REG).map(function(k){ return '<option value="' + k + '">' + REG[k].name + '</option>'; }).join('');
+  fOp.innerHTML = '<option value="all">Все</option>' + Object.keys(OPS).map(function(k){ return '<option value="' + esc(k) + '">' + OPS[k].name + '</option>'; }).join('');
+  function bindSelect(el, key){ el.value = S[key]; el.addEventListener('change', function(){ S[key] = el.value; save(); renderChips(); renderCatalog(); }); }
+  bindSelect(fRegion, 'region'); bindSelect(fOp, 'op'); bindSelect(document.getElementById('fGroup'), 'group'); bindSelect(document.getElementById('fSort'), 'sort');
+  function syncSelects(){ fRegion.value = S.region; fOp.value = S.op; }
+
+  var vCards = document.getElementById('vCards'), vTable = document.getElementById('vTable');
+  function syncView(){ vCards.setAttribute('aria-pressed', String(S.view === 'cards')); vTable.setAttribute('aria-pressed', String(S.view === 'table')); }
+  vCards.addEventListener('click', function(){ S.view = 'cards'; save(); syncView(); renderCatalog(); });
+  vTable.addEventListener('click', function(){ S.view = 'table'; save(); syncView(); renderCatalog(); });
+  syncView();
+
+  var fuelEl = document.getElementById('fuel'); fuelEl.value = S.fuel;
+  fuelEl.addEventListener('input', function(){ var v = parseFloat(fuelEl.value); if (!isNaN(v) && v >= 0) { S.fuel = v; save(); renderAll(); } });
+
+  renderAirports();
+  document.getElementById('airTable').addEventListener('input', function(e){
+    var t = e.target, v = parseFloat(t.value); if (isNaN(v) || v < 0) return;
+    if (t.dataset.park) S.park[t.dataset.park] = v;
+    if (t.dataset.mi) S.mi[t.dataset.mi] = v;
+    save(); renderAll();
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ck]'), function(el){
+    el.checked = !!S.done[el.dataset.ck];
+    el.addEventListener('change', function(){ if (el.checked) S.done[el.dataset.ck] = true; else delete S.done[el.dataset.ck]; save(); });
+  });
+
+  document.addEventListener('toggle', function(e){
+    var d = e.target;
+    if (d && d.matches && d.matches('details.more[data-id]')) { if (d.open) OPEN[d.dataset.id] = true; else delete OPEN[d.dataset.id]; }
+  }, true);
+
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    var star = t.closest('[data-star]');
+    if (star) {
+      var id = star.getAttribute('data-star'), i = S.stars.indexOf(id);
+      if (i >= 0) S.stars.splice(i, 1); else S.stars.push(id);
+      save();
+      Array.prototype.forEach.call(document.querySelectorAll('[data-star="' + id + '"]'), function(b){
+        var on = S.stars.indexOf(id) >= 0, o = byId(id);
+        b.setAttribute('aria-pressed', String(on)); b.textContent = on ? '★' : '☆';
+        b.setAttribute('aria-label', (on ? 'Убрать из сравнения: ' : 'Добавить в сравнение: ') + o.hotel);
+        b.title = on ? 'Убрать из сравнения' : 'Добавить в сравнение';
+      });
+      renderCompare(); renderChips(); renderFab();
+      if (S.cats.indexOf('fav') >= 0) renderCatalog();
+      return;
+    }
+    var cat = t.closest('[data-cat]');
+    if (cat) {
+      var c = cat.getAttribute('data-cat'), j = S.cats.indexOf(c);
+      if (j >= 0) S.cats.splice(j, 1); else S.cats.push(c);
+      save(); renderChips(); renderCatalog(); return;
+    }
+    if (t.closest('[data-reset]')) { S.cats = []; S.region = 'all'; S.op = 'all'; syncSelects(); save(); renderChips(); renderCatalog(); return; }
+    var reg = t.closest('[data-show-region]');
+    if (reg) { S.region = reg.getAttribute('data-show-region'); S.op = 'all'; S.cats = []; syncSelects(); save(); renderChips(); renderCatalog(); scrollToId('all'); return; }
+    var opb = t.closest('[data-show-op]');
+    if (opb) { S.op = opb.getAttribute('data-show-op'); S.region = 'all'; S.cats = []; syncSelects(); save(); renderChips(); renderCatalog(); scrollToId('all'); return; }
+    var copy = t.closest('[data-copy]');
+    if (copy) {
+      var src = document.getElementById(copy.getAttribute('data-copy')); if (!src) return;
+      var text = src.textContent, old = copy.textContent;
+      var done = function(){ copy.textContent = 'Скопировано'; setTimeout(function(){ copy.textContent = old; }, 1400); };
+      var fallback = function(){ var r = document.createRange(); r.selectNodeContents(src); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); copy.textContent = 'Выделено: Cmd+C'; setTimeout(function(){ copy.textContent = old; }, 2400); };
+      try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, fallback); } else { fallback(); } } catch (err) { fallback(); }
+    }
+  });
+
+  /* ---------- section highlight in the top strip ---------- */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navlinks a'));
+  var nav = document.getElementById('navlinks'), fab = document.getElementById('fab');
+  function setCurrent(id){
+    navLinks.forEach(function(a){
+      var on = a.getAttribute('href') === '#' + id;
+      if (on) {
+        a.setAttribute('aria-current', 'true');
+        var l = a.offsetLeft, r = l + a.offsetWidth;
+        if (l < nav.scrollLeft || r > nav.scrollLeft + nav.clientWidth) nav.scrollLeft = Math.max(0, l - 24);
+      } else a.removeAttribute('aria-current');
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var vis = {};
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ vis[en.target.id] = en.isIntersecting; });
+      for (var i = 0; i < navLinks.length; i++) { var id = navLinks[i].getAttribute('href').slice(1); if (vis[id]) { setCurrent(id); break; } }
+      fab.classList.toggle('away', !!vis.compare);
+    }, {rootMargin:'-' + (46 + 8) + 'px 0px -55% 0px'});
+    navLinks.forEach(function(a){ var el = document.getElementById(a.getAttribute('href').slice(1)); if (el) io.observe(el); });
+  }
+
+  renderAll();
+  if (/^#[\w.~-]+$/.test(location.hash)) { var landing = document.getElementById(location.hash.slice(1)); if (landing) setTimeout(function(){ landing.scrollIntoView({block:'start'}); }, 0); }
+})();
+</script>
+
+</body>
+</html>
